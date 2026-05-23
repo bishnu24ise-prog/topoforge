@@ -1,125 +1,179 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TopoForge - Explore Terrain in 3D</title>
+    <meta name="description" content="TopoForge — Explore any place on Earth as real 3D terrain. Powered by AI and satellite data.">
+    <title>TopoForge — AI 3D Terrain Explorer</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌍</text></svg>">
-    <link rel="stylesheet" href="/static/style.css">
-    <!-- Leaflet.js for world map picker -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./style.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
 </head>
-
 <body>
     <div id="container"></div>
 
+    <!-- Ambient glow orbs -->
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+
     <!-- Control Panel -->
     <div id="controls">
-        <h1>🌍 TopoForge</h1>
-        <p class="subtitle">Upload a map or pick any place on Earth.</p>
 
-        <!-- Upload Section -->
-        <section id="upload-section">
-            <h3 data-step-label="Upload Map"></h3>
-            <div id="drop-zone">
-                <p>Drop GeoTIFF or image<br><small>or click to browse</small></p>
-                <input type="file" id="file-input" accept=".tif,.tiff,.jpg,.jpeg,.png,.webp">
-            </div>
-            <div class="upload-divider"><span>or</span></div>
-            <button class="map-pick-btn" id="open-map-btn">🗺️ Pick from World Map</button>
-            <div id="file-info" class="hidden">
-                <span id="file-name"></span>
-                <span id="file-bounds" class="badge"></span>
-            </div>
-        </section>
-
-        <!-- Bounds Section (for non-GeoTIFF) -->
-        <section id="bounds-section" class="hidden">
-            <h3 data-step-label="Set Bounds"></h3>
-            <div class="bounds-grid">
-                <div class="input-group">
-                    <label>North</label>
-                    <input type="number" id="north" step="0.0001" placeholder="e.g. 22.5">
+        <!-- Sidebar Header -->
+        <div id="sidebar-header">
+            <div id="logo-row">
+                <div class="logo-hex">
+                    <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                        <path d="M14 2L25.5 8.5V21.5L14 28L2.5 21.5V8.5L14 2Z" stroke="url(#grad)" stroke-width="1.5" fill="none"/>
+                        <path d="M14 7L21 11V19L14 23L7 19V11L14 7Z" fill="url(#grad)" opacity="0.3"/>
+                        <defs>
+                            <linearGradient id="grad" x1="2.5" y1="2" x2="25.5" y2="28">
+                                <stop offset="0%" stop-color="#22d3ee"/>
+                                <stop offset="100%" stop-color="#818cf8"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
                 </div>
-                <div class="input-group">
-                    <label>South</label>
-                    <input type="number" id="south" step="0.0001" placeholder="e.g. 22.5">
-                </div>
-                <div class="input-group">
-                    <label>West</label>
-                    <input type="number" id="west" step="0.0001" placeholder="e.g. 22.5">
-                </div>
-                <div class="input-group">
-                    <label>East</label>
-                    <input type="number" id="east" step="0.0001" placeholder="e.g. 22.5">
+                <div>
+                    <h1>TopoForge</h1>
+                    <span class="version-badge">AI Terrain · v2.0</span>
                 </div>
             </div>
-            <button class="secondary" id="extract-bounds-btn">🤖 Extract with Gemini</button>
-        </section>
+            <p class="tagline">Explore any place on Earth in stunning 3D</p>
+            <div class="header-divider"></div>
+        </div>
 
-        <!-- Terrain Section -->
-        <section id="terrain-section" class="hidden">
-            <h3 data-step-label="Build Terrain"></h3>
-            <button class="primary" id="fetch-dem-btn">Fetch Real DEM</button>
-            <button class="secondary" id="stylize-btn">🎨 Stylize Texture</button>
-        </section>
+        <!-- Sections -->
+        <div id="sidebar-body">
 
-        <!-- View Controls -->
-        <section id="view-section" class="hidden">
-            <h3 data-step-label="Explore"></h3>
-            <div class="slider-group">
-                <label>Elevation Scale</label>
-                <input type="range" id="exag" min="1" max="80" value="7">
-                <span class="value" id="exag-val">7×</span>
-            </div>
-            <div class="slider-group">
-                <label>Rotation Speed</label>
-                <input type="range" id="rotation" min="0" max="100" value="0">
-                <span class="value" id="rotation-val">0%</span>
-            </div>
-            <div class="slider-group">
-                <label>Plane Volume</label>
-                <input type="range" id="plane-volume" min="0" max="100" value="50">
-                <span class="value" id="plane-volume-val">50%</span>
-            </div>
-            <button class="secondary" id="fly-btn">✈️ Fly Plane</button>
-        </section>
+            <!-- Upload Section -->
+            <section id="upload-section">
+                <h3 data-step-label="Upload Map"></h3>
+                <div id="drop-zone">
+                    <div class="drop-icon">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 16V4m0 0L8 8m4-4l4 4"/><rect x="2" y="16" width="20" height="6" rx="2" opacity="0.4"/></svg>
+                    </div>
+                    <p>Drop GeoTIFF or image</p>
+                    <small>Click to browse · .tif .jpg .png</small>
+                    <input type="file" id="file-input" accept=".tif,.tiff,.jpg,.jpeg,.png,.webp">
+                </div>
+                <div class="upload-divider"><span>or</span></div>
+                <button class="map-pick-btn" id="open-map-btn">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="10" r="3"/><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg>
+                    Pick from World Map
+                </button>
+                <div id="file-info" class="hidden">
+                    <span id="file-name"></span>
+                    <span id="file-bounds" class="badge"></span>
+                </div>
+            </section>
 
-        <!-- Lighting Controls -->
-        <section id="lighting-section" class="hidden">
-            <h3 data-step-label="Lighting"></h3>
-            <div class="slider-group">
-                <label>Sun Azimuth</label>
-                <input type="range" id="sun-azimuth" min="0" max="360" value="135">
-                <span class="value" id="sun-azimuth-val">135°</span>
-            </div>
-            <div class="slider-group">
-                <label>Sun Elevation</label>
-                <input type="range" id="sun-elevation" min="10" max="90" value="47">
-                <span class="value" id="sun-elevation-val">47°</span>
-            </div>
-            <button class="secondary" id="reset-sun-btn">Reset to Default</button>
-        </section>
+            <!-- Bounds Section -->
+            <section id="bounds-section" class="hidden">
+                <h3 data-step-label="Set Bounds"></h3>
+                <div class="bounds-grid">
+                    <div class="input-group">
+                        <label>North</label>
+                        <input type="number" id="north" step="0.0001" placeholder="e.g. 22.5">
+                    </div>
+                    <div class="input-group">
+                        <label>South</label>
+                        <input type="number" id="south" step="0.0001" placeholder="e.g. 21.5">
+                    </div>
+                    <div class="input-group">
+                        <label>West</label>
+                        <input type="number" id="west" step="0.0001" placeholder="e.g. 88.0">
+                    </div>
+                    <div class="input-group">
+                        <label>East</label>
+                        <input type="number" id="east" step="0.0001" placeholder="e.g. 89.0">
+                    </div>
+                </div>
+                <button class="btn-secondary" id="extract-bounds-btn">🤖 Extract with Gemini AI</button>
+            </section>
 
-        <!-- Voice Chat Section -->
-        <section id="voice-section" class="hidden">
-            <h3 data-step-label="Tour Guide"></h3>
-            <button class="secondary" id="voice-btn">🎤 Start Voice Chat</button>
-            <div id="voice-status" class="hidden">
-                <span class="voice-indicator"></span>
-                <span id="voice-status-text">Listening...</span>
-            </div>
-        </section>
+            <!-- Terrain Section -->
+            <section id="terrain-section" class="hidden">
+                <h3 data-step-label="Build Terrain"></h3>
+                <button class="btn-primary" id="fetch-dem-btn">
+                    <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 20l5-8 4 5 4-9 5 12"/></svg>
+                    Fetch Real Elevation
+                </button>
+                <button class="btn-secondary" id="stylize-btn">🎨 Stylize Texture</button>
+            </section>
 
-        <div id="status"></div>
-    </div>
+            <!-- View Section -->
+            <section id="view-section" class="hidden">
+                <h3 data-step-label="Explore"></h3>
+                <div class="slider-group">
+                    <div class="slider-header">
+                        <label>Elevation Scale</label>
+                        <span class="value" id="exag-val">7×</span>
+                    </div>
+                    <input type="range" id="exag" min="1" max="80" value="7">
+                </div>
+                <div class="slider-group">
+                    <div class="slider-header">
+                        <label>Rotation Speed</label>
+                        <span class="value" id="rotation-val">0%</span>
+                    </div>
+                    <input type="range" id="rotation" min="0" max="100" value="0">
+                </div>
+                <div class="slider-group">
+                    <div class="slider-header">
+                        <label>Plane Volume</label>
+                        <span class="value" id="plane-volume-val">50%</span>
+                    </div>
+                    <input type="range" id="plane-volume" min="0" max="100" value="50">
+                </div>
+                <button class="btn-secondary" id="fly-btn">✈️ Fly Plane Mode</button>
+            </section>
 
-    <!-- Info Panel -->
+            <!-- Lighting Section -->
+            <section id="lighting-section" class="hidden">
+                <h3 data-step-label="Lighting"></h3>
+                <div class="slider-group">
+                    <div class="slider-header">
+                        <label>Sun Azimuth</label>
+                        <span class="value" id="sun-azimuth-val">135°</span>
+                    </div>
+                    <input type="range" id="sun-azimuth" min="0" max="360" value="135">
+                </div>
+                <div class="slider-group">
+                    <div class="slider-header">
+                        <label>Sun Elevation</label>
+                        <span class="value" id="sun-elevation-val">47°</span>
+                    </div>
+                    <input type="range" id="sun-elevation" min="10" max="90" value="47">
+                </div>
+                <button class="btn-ghost" id="reset-sun-btn">↺ Reset Lighting</button>
+            </section>
+
+            <!-- Voice Section -->
+            <section id="voice-section" class="hidden">
+                <h3 data-step-label="Tour Guide"></h3>
+                <button class="btn-secondary" id="voice-btn">🎤 Start AI Voice Chat</button>
+                <div id="voice-status" class="hidden">
+                    <span class="voice-indicator"></span>
+                    <span id="voice-status-text">Listening...</span>
+                </div>
+            </section>
+
+        </div><!-- end sidebar-body -->
+
+        <!-- Status bar -->
+        <div id="status-bar">
+            <div id="status">Ready · Upload a map or pick a location</div>
+        </div>
+
+    </div><!-- end controls -->
+
+    <!-- Controls Info Pill -->
     <div id="info">
-        <strong>Controls:</strong>
-        <kbd>Drag</kbd> Rotate · <kbd>Scroll</kbd> Zoom ·
-        Fly: <kbd>WASD</kbd> <kbd>Space</kbd>/<kbd>C</kbd>
+        <kbd>Drag</kbd> Rotate &nbsp;·&nbsp; <kbd>Scroll</kbd> Zoom &nbsp;·&nbsp; Fly: <kbd>WASD</kbd> <kbd>Space/C</kbd>
     </div>
 
     <!-- Map Picker Modal -->
@@ -130,7 +184,7 @@
                     <h2>🌍 Pick a Location</h2>
                     <p>Click anywhere on the map to select an area</p>
                 </div>
-                <button id="close-map-btn" aria-label="Close map picker">✕</button>
+                <button id="close-map-btn" aria-label="Close">✕</button>
             </div>
             <div id="leaflet-map"></div>
             <div id="map-picker-controls">
@@ -153,17 +207,17 @@
 
     <!-- Loading Overlay -->
     <div id="loading" class="hidden">
-        <div class="spinner"></div>
-        <p id="loading-text">Loading...</p>
+        <div class="loading-card">
+            <div class="spinner"></div>
+            <p id="loading-text">Loading...</p>
+        </div>
     </div>
 
-    <!-- Leaflet.js -->
+    <!-- Scripts -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-    <!-- Three.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
-    <script src="/static/voice.js"></script>
-    <script src="/static/app.js"></script>
+    <script src="./voice.js"></script>
+    <script src="./app.js"></script>
 </body>
-
 </html>

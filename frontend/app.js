@@ -115,13 +115,13 @@ function init() {
     state.scene.add(water);
 
     // Initialize plane audio
-    state.planeAudio = new Audio('/static/assets/plane.mp3');
+    state.planeAudio = new Audio('./assets/plane.mp3');
     state.planeAudio.loop = true;
     state.planeAudio.volume = 0.5;
 
     // Load plane model with wrapper for correct orientation
     const gltfLoader = new THREE.GLTFLoader();
-    gltfLoader.load('/static/assets/plane.glb', (gltf) => {
+    gltfLoader.load('./assets/plane.glb', (gltf) => {
         // Create wrapper Object3D for movement (its -Z is forward)
         state.plane = new THREE.Object3D();
 
