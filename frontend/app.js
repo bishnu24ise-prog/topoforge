@@ -517,7 +517,7 @@ async function fetchDEM() {
         const tilePromises = [];
         for (let y = yMin; y <= yMax; y++) {
             for (let x = xMin; x <= xMax; x++) {
-                const url = `https://s3.amazonaws.com/elevation-tiles-prod/terrarium/${zoom}/${x}/${y}.png`;
+                const url = `/api/dem-tile?z=${zoom}&x=${x}&y=${y}`;
                 tilePromises.push(
                     loadImage(url)
                         .then(img => ({ img, x: (x - xMin) * tileSize, y: (y - yMin) * tileSize }))

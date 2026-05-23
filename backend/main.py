@@ -5,10 +5,12 @@ TopoForge — FastAPI Backend
 import os
 import uuid
 import shutil
+import io
+import urllib.request
 from pathlib import Path
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import FileResponse, JSONResponse, StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 
@@ -153,6 +155,26 @@ async def health():
         "ai": gemini_client.HAS_GEMINI,
         "db": database.get_client() is not None,
     }
+
+
+@app.get("/api/dem-tile")
+def get_dem_tile(z: int, x: int, y: int):
+    """Proxy AWS S3 elevation tiles to bypass browser CORS / COEP restrictions."""
+    url = f"https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png"
+    try:
+        req = urllib.request.Request(
+            url,
+            headers={"User-Agent": "Mozilla/5.0"}
+        )
+        with urllib.request.urlopen(req, timeout=8) as response:
+            if response.status == 200:
+                return StreamingResponse(io.BytesIO(response.read()), media_type="image/png")
+            else:
+                raise HTTPException(response.status, "Failed to fetch tile from S3")
+    except urllib.error.HTTPError as e:
+        raise HTTPException(e.code, f"S3 tile not found or forbidden: {e.reason}")
+    except Exception as e:
+        raise HTTPException(500, f"Proxy error: {str(e)}")
 
 
 @app.get("/api/gemini-key")
