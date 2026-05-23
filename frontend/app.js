@@ -758,7 +758,8 @@ function openMapPicker() {
             {
                 attribution: '© <a href="https://carto.com/">CARTO</a> © <a href="https://www.openstreetmap.org/">OSM</a>',
                 subdomains: 'abcd',
-                maxZoom: 18
+                maxZoom: 18,
+                crossOrigin: true
             }
         ).addTo(mapState.leaflet);
 
