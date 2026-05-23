@@ -400,6 +400,10 @@ async function uploadFile(file) {
 function loadTexture(base64) {
     const loader = new THREE.TextureLoader();
     state.colorTexture = loader.load('data:image/jpeg;base64,' + base64, () => {
+        // Set maximum anisotropic filtering for razor-sharp graphics at all angles
+        state.colorTexture.anisotropy = state.renderer.capabilities.getMaxAnisotropy();
+        state.colorTexture.needsUpdate = true;
+        
         // Create initial flat terrain
         createTerrain();
         document.getElementById('view-section').classList.remove('hidden');
@@ -418,7 +422,7 @@ function createTerrain() {
     }
 
     const size = 100;
-    const segments = 256;
+    const segments = 512; // Quadrupled vertex density (512x512) for razor-sharp organic peaks!
     const exag = parseFloat(document.getElementById('exag').value);
 
     const geometry = new THREE.PlaneGeometry(size, size, segments, segments);
@@ -732,6 +736,10 @@ async function stylizeTexture() {
         state.colorTexture = loader.load(
             data.stylized_url,
             () => {
+                // Max anisotropic filtering
+                state.colorTexture.anisotropy = state.renderer.capabilities.getMaxAnisotropy();
+                state.colorTexture.needsUpdate = true;
+                
                 createTerrain();
                 hideLoading();
                 btn.disabled = false;
@@ -919,6 +927,10 @@ async function confirmMapPick() {
         // 2. Load as Three.js texture
         const loader = new THREE.TextureLoader();
         state.colorTexture = loader.load(satCanvas.toDataURL(), () => {
+            // Max anisotropic filtering
+            state.colorTexture.anisotropy = state.renderer.capabilities.getMaxAnisotropy();
+            state.colorTexture.needsUpdate = true;
+            
             // Flat terrain first
             createTerrain();
             document.getElementById('view-section').classList.remove('hidden');
