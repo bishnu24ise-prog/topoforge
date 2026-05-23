@@ -193,17 +193,33 @@ Your role:
             sourceNode = audioContext.createMediaStreamSource(mediaStream);
             workletNode = new AudioWorkletNode(audioContext, 'audio-capture-processor');
 
-            // Handle audio data from worklet
+            // Handle audio data from worklet with a high-performance local noise gate VAD!
+            let silentFramesCount = 0;
+            const SILENCE_THRESHOLD = 0.006; // Highly sensitive threshold to catch soft speech but block hum
+            
             workletNode.port.onmessage = (event) => {
                 if (!active || !ws || ws.readyState !== WebSocket.OPEN) return;
 
                 const inputData = event.data;
 
-                // Basic voice activity detection - only interrupt if user is actually speaking
+                // Basic voice activity detection
                 let maxAmp = 0;
                 for (let i = 0; i < inputData.length; i++) {
                     maxAmp = Math.max(maxAmp, Math.abs(inputData[i]));
                 }
+                
+                // Noise-gate VAD filter: ignore fan hums, AC noise, breathing, and mic static
+                if (maxAmp < SILENCE_THRESHOLD) {
+                    silentFramesCount++;
+                    // Skip streaming once silence is established to let Gemini detect natural turn endings
+                    if (silentFramesCount > 6) {
+                        return;
+                    }
+                } else {
+                    silentFramesCount = 0; // Reset instantly when active voice is detected
+                }
+
+                // If user speaks while guide is speaking, interrupt the guide instantly
                 if (maxAmp > 0.02 && (isPlaying || playbackQueue.length > 0)) {
                     interrupt();
                 }
