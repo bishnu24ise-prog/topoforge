@@ -105,13 +105,28 @@
                 
                 <div class="input-group" style="margin-top: 12px;">
                     <label>MAP STYLE</label>
-                    <select id="map-style-select" class="premium-select">
+                    <select id="map-style-select" class="premium-select" style="margin-bottom: 4px;">
                         <option value="satellite">🏔️ Pure Satellite (Natural)</option>
                         <option value="hybrid" selected>🛣️ Hybrid (Satellite + Roads & Labels)</option>
                     </select>
                 </div>
+
+                <div class="input-group" style="margin-top: 12px;">
+                    <label>TEXTURE STYLE</label>
+                    <select id="texture-style-select" class="premium-select" style="margin-bottom: 4px;">
+                        <option value="realistic" selected>✨ Realistic Stylish</option>
+                        <option value="hypsometric">🗺️ Hypsometric (Atlas)</option>
+                        <option value="vintage">📜 Vintage Parchment</option>
+                        <option value="cyberpunk">🌌 Cyberpunk Neon</option>
+                        <option value="emerald">🌲 Emerald Forest</option>
+                        <option value="volcanic">🔥 Volcanic Wasteland</option>
+                    </select>
+                </div>
                 
-                <button class="btn-secondary" id="stylize-btn">🎨 Stylize Texture</button>
+                <div style="display: flex; gap: 8px; margin-top: 12px;">
+                    <button class="btn-secondary" id="stylize-btn" style="flex: 1; margin-bottom: 0;">🎨 Stylize</button>
+                    <button class="btn-ghost" id="reset-stylize-btn" style="padding: 0 12px; margin: 0; width: auto; border: 1px solid var(--border);" title="Reset to original map color">↺ Reset</button>
+                </div>
             </section>
 
             <!-- View Section -->

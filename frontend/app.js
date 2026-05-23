@@ -191,6 +191,7 @@ function setupUI() {
     // Terrain buttons
     document.getElementById('fetch-dem-btn').addEventListener('click', fetchDEM);
     document.getElementById('stylize-btn').addEventListener('click', stylizeTexture);
+    document.getElementById('reset-stylize-btn').addEventListener('click', resetTextureToOriginal);
 
     // View controls
     const exagSlider = document.getElementById('exag');
@@ -734,8 +735,10 @@ async function stylizeTexture() {
     btn.disabled = true;
     btn.textContent = '🎨 Stylizing...';
 
-    showLoading('Stylizing texture...');
-    setStatus('Applying styling...', 'loading');
+    const style = document.getElementById('texture-style-select').value;
+
+    showLoading(`Stylizing texture (${style})...`);
+    setStatus(`Applying ${style} styling...`, 'loading');
 
     try {
         // For map picks, always upload the satellite canvas on-demand. This guarantees the backend always has a fresh copy even if the server restarts/wipes its ephemeral disk!
@@ -754,7 +757,7 @@ async function stylizeTexture() {
             state.fileId = uploadData.file_id; // Set fresh backend-recognized fileId
         }
 
-        const response = await fetch(`/api/stylize?file_id=${state.fileId}`, {
+        const response = await fetch(`/api/stylize?file_id=${state.fileId}&style=${style}`, {
             method: 'POST'
         });
 
@@ -783,7 +786,7 @@ async function stylizeTexture() {
                 hideLoading();
                 btn.disabled = false;
                 btn.textContent = originalText;
-                setStatus('Texture stylized successfully', 'success');
+                setStatus(`Texture stylized as ${style} successfully`, 'success');
             },
             undefined,
             (error) => {
@@ -798,6 +801,43 @@ async function stylizeTexture() {
         setStatus('Stylization error: ' + err.message, 'error');
         console.error(err);
     }
+}
+
+function resetTextureToOriginal() {
+    let source = null;
+    if (state.satCanvas) {
+        source = state.satCanvas.toDataURL();
+    } else if (state.textureB64) {
+        source = 'data:image/jpeg;base64,' + state.textureB64;
+    }
+
+    if (!source) {
+        setStatus('No original texture found to reset', 'error');
+        return;
+    }
+
+    showLoading('Resetting to original texture...');
+    setStatus('Resetting texture...', 'loading');
+
+    const loader = new THREE.TextureLoader();
+    loader.setCrossOrigin('anonymous');
+    state.colorTexture = loader.load(source, () => {
+        state.colorTexture.anisotropy = state.renderer.capabilities.getMaxAnisotropy();
+        state.colorTexture.minFilter = THREE.LinearFilter;
+        state.colorTexture.magFilter = THREE.LinearFilter;
+        state.colorTexture.generateMipmaps = false;
+        state.colorTexture.needsUpdate = true;
+
+        if (state.terrain) {
+            state.terrain.material.map = state.colorTexture;
+            state.terrain.material.needsUpdate = true;
+        }
+        hideLoading();
+        setStatus('Texture reset to original', 'success');
+    }, undefined, (err) => {
+        hideLoading();
+        setStatus('Failed to reset texture: ' + err.message, 'error');
+    });
 }
 
 // ===========================================

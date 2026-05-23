@@ -121,14 +121,14 @@ async def narrate(location_info: dict, features: list[str] = []):
 
 
 @app.post("/api/stylize")
-async def stylize(file_id: str):
+async def stylize(file_id: str, style: str = "realistic"):
     files = list(UPLOADS_DIR.glob(f"{file_id}.*"))
     if not files:
         raise HTTPException(404, "File not found")
 
     try:
         database.increment_view(file_id)
-        stylized_url = fal_stylize.stylize_texture(str(files[0]))
+        stylized_url = fal_stylize.stylize_texture(str(files[0]), style=style)
         return JSONResponse({"success": True, "stylized_url": stylized_url})
     except Exception as e:
         raise HTTPException(500, f"Stylization error: {str(e)}")
