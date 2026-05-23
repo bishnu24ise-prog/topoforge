@@ -751,8 +751,8 @@ function openMapPicker() {
     if (!mapState.leaflet) {
         // Dark CartoDB tiles — free, no API key
         mapState.leaflet = L.map('leaflet-map', {
-            center: [20, 0],
-            zoom: 3,
+            center: [20.5937, 78.9629], // Center directly on India
+            zoom: 4,                     // Zoomed closer so it's super clear
             zoomControl: true
         });
 
