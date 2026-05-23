@@ -55,7 +55,7 @@ Return ONLY a JSON object in this exact format, no other text:
 Use decimal degrees. West longitudes are negative. Be as precise as possible."""
 
     response = await client.aio.models.generate_content(
-        model="gemini-2.0-flash-exp",
+        model="gemini-2.5-flash",
         contents=[
             types.Part.from_bytes(data=image_data, mime_type=mime_type),
             prompt
@@ -88,17 +88,17 @@ async def generate_narration(location_info: dict, visible_features: list[str]) -
     client = get_client()
     
     prompt = f"""You are a knowledgeable tour guide narrating a scenic flyover.
-
+ 
 Current position: {location_info.get('lat', 'unknown')}°N, {location_info.get('lon', 'unknown')}°W
 Elevation: {location_info.get('elevation', 'unknown')}m
 Visible features: {', '.join(visible_features) if visible_features else 'general terrain'}
-
+ 
 Generate a brief, engaging narration (1-2 sentences) about what the viewer is seeing.
 Focus on interesting geographic, historical, or natural facts.
 Be conversational and enthusiastic but not over the top."""
 
     response = await client.aio.models.generate_content(
-        model="gemini-2.0-flash-exp",
+        model="gemini-2.5-flash",
         contents=[prompt]
     )
     
