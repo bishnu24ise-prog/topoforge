@@ -738,12 +738,12 @@ async function stylizeTexture() {
     setStatus('Applying styling...', 'loading');
 
     try {
-        // For map picks, upload the satellite canvas first so backend has the file to stylize
-        if (state.fileId.startsWith('map-') && state.satCanvas) {
+        // For map picks, always upload the satellite canvas on-demand. This guarantees the backend always has a fresh copy even if the server restarts/wipes its ephemeral disk!
+        if (state.satCanvas) {
             setStatus('Caching map on server...', 'loading');
             const blob = await new Promise(resolve => state.satCanvas.toBlob(resolve, 'image/jpeg', 0.9));
             const formData = new FormData();
-            formData.append('file', blob, `${state.fileId}.jpg`);
+            formData.append('file', blob, `map-pick-${Date.now()}.jpg`);
             
             const uploadRes = await fetch('/api/upload', {
                 method: 'POST',
@@ -751,7 +751,7 @@ async function stylizeTexture() {
             });
             if (!uploadRes.ok) throw new Error('Failed to cache map on server');
             const uploadData = await uploadRes.json();
-            state.fileId = uploadData.file_id; // Set new backend-recognized fileId
+            state.fileId = uploadData.file_id; // Set fresh backend-recognized fileId
         }
 
         const response = await fetch(`/api/stylize?file_id=${state.fileId}`, {
