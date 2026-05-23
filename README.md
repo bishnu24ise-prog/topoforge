@@ -1,46 +1,98 @@
-# TopoForge 🌍
+# TopoForge 🌍 — AI 3D Terrain Explorer
 
-**Upload any topographic map. Explore the terrain in 3D with an AI tour guide.**
+> **Turn any 2D map or satellite tile into a highly detailed, interactive 3D terrain with real-time AI Voice narration and premium visual styles.**
 
-Upload a GeoTIFF or JPG map, fetch real elevation data, and fly over the terrain while an AI narrates what you're seeing.
+TopoForge is a full-stack, professional-grade 3D geographic visualization application. It combines high-fidelity **Three.js** rendering, real-time **Gemini AI voice interactions**, dynamic elevation mapping, and custom **local image stylization presets** to let you explore the Earth like never before.
 
-## Features
+---
 
-- **📤 Upload any map** — GeoTIFF (auto-extracts bounds) or JPG/PNG (AI-extracted bounds)
-- **🗺️ Real elevation data** — Fetches DEM tiles from AWS Terrain Tiles
-- **🎮 Fly mode** — WASD + mouse to soar over terrain
-- **🎤 Voice tour** — Ask the AI guide questions while you fly
-- **🌄 Dynamic lighting** — Adjustable sun position
-- **🎨 Texture stylization** — Hypsometric tinting by elevation
-- **🗄️ Upload history** — All sessions stored in database
+## 🌟 Premium Features
 
-## Quick Start
+### 1. 🏔️ High-Density 3D Terrain Engine
+* **Razor-Sharp organic peaks:** Quadrupled vertex grid density (512×512 segments) for extreme micro-relief detail.
+* **Georeferenced Map support:** Directly upload GeoTIFF `.tif`/`.tiff` files or standard `.jpg`/`.png`/`.webp` images.
+* **Dynamic Lighting & Shadows:** Adjustable Sun Azimuth and Elevation controls with real-time soft shadow mapping (PCFSoftShadowMap) to simulate sunrise, noon, and sunset.
 
+### 2. 🎨 Premium "Realistic Stylish" Texturing (Local & 100% Free)
+Instead of expensive external cloud APIs, TopoForge performs high-performance local image styling in under **0.5 seconds** using PIL and NumPy. 
+* **✨ Realistic Stylish (Default):** Sharpens satellite tiles using an advanced local `UnsharpMask` and blends a subtle 15% elevation ramp (Sapphire ocean → Emerald lowlands → Snowy peaks) with contrast and saturation boosts.
+* **🎨 5 Stunning Visual Presets:**
+  1. `🗺️ Hypsometric Relief`: Classic scientific geographic atlas styling.
+  2. `📜 Vintage Parchment`: Historical paper look, sepia values, sienna mountains.
+  3. `🌌 Cyberpunk Neon`: Sci-fi deep indigo valleys, neon cyan slopes, glowing magenta peaks.
+  4. `🌲 Emerald Forest`: Lush, saturated nature greens and deep teal waterways.
+  5. `🔥 Volcanic Wasteland`: Scorched black basalt lowlands with glowing molten orange lava.
+* **↺ Instant Reset:** Reverts to clean, original satellite/hybrid imagery in under 50ms without hitting the backend.
+
+### 3. ✈️ Interactive flight Simulation Mode
+* **WASD flight Controls:** Switch from Orbit Camera to direct flight controls. Steer, dive, soar, and climb over the terrain mesh.
+* **Immersive flight Engine Audio:** Realistic looping engine noise (`plane.mp3`) that matches your exploration.
+
+### 4. 🎤 Real-Time Gemini AI Voice Guide
+* **Real-time 2-way Voice Chat:** Start a conversation with an AI guide powered by the Gemini Live API.
+* **Lag-Free Voice streaming:** Advanced client-side audio processing (VAD noise gate and optimized queue buffers) to support natural interruptions and smooth playback.
+* **Location-Aware Narration:** The guide automatically knows the bounds of the terrain you are viewing and narrates its real-world history, geography, and ecology as you fly.
+
+### 5. 🗺️ World Map Area Picker
+* **Interactive Leaflet Map Modal:** Click anywhere on Earth to pick a custom area to explore.
+* **Dynamic Scale controls:** Slider to scale your exploration box from a local **City** (~0.1°) to a larger **Region** or **Country** (~2.0°).
+* **Automatic DEM Fetching:** Automatically queries AWS Terrain Tiles to reconstruct the elevation map of your chosen coordinates on-the-fly.
+
+---
+
+## 🛠️ Tech Stack
+
+* **Frontend:** HTML5, Vanilla JavaScript, CSS3 (Premium dark-mode glassmorphism), Three.js (WebGL), GLTFLoader, Leaflet Maps.
+* **Backend:** FastAPI, Python 3.13, Pillow (PIL), NumPy, rasterio (for GeoTIFF geospatial parsing).
+* **AI Engine:** Google Gemini Live API & Vision Models.
+* **Database & Storage:** Supabase (PostgreSQL session tracking and database views).
+* **Hosting Configuration:** Optimized for rapid deployments on **Vercel** (Frontend) and **Render** (FastAPI Backend).
+
+---
+
+## 🚀 Quick Start
+
+### 1. Configure Environment Variables
+Copy `.env.example` to `.env` in the root directory:
 ```bash
 cp .env.example .env
-# Fill in GEMINI_API_KEY and SUPABASE_URL + SUPABASE_ANON_KEY
-uv sync
-uv run python run.py
+```
+Fill in the following details:
+```ini
+# Free Gemini API key from Google AI Studio
+GEMINI_API_KEY=your_gemini_api_key_here
+
+# Supabase database config
+SUPABASE_URL=https://xxxxxxxxxxxx.supabase.co
+SUPABASE_ANON_KEY=your_anon_key_here
 ```
 
-Open http://localhost:8000
+### 2. Run Locally
+Using the `uv` tool or standard python packaging:
+```bash
+# Sync dependencies
+uv sync
 
-## Tech Stack
+# Start the full-stack server
+uv run python run.py
+```
+Open **`http://localhost:8000`** in your browser.
 
-- **Frontend**: Vanilla JS + Three.js
-- **Backend**: FastAPI + Python 3.13
-- **Database**: Supabase (PostgreSQL, free tier)
-- **Elevation**: AWS Terrain Tiles (free)
-- **AI**: Gemini 2.0 Flash + Live API (free tier)
+---
 
-## Controls
+## 🎮 Interface & Navigation Controls
 
-| Mode | Control | Action |
-|------|---------|--------|
-| Orbit | Drag | Rotate |
-| Orbit | Scroll | Zoom |
-| Fly | WASD | Pitch and turn |
+| Camera Mode | Keyboard / Mouse Input | Action |
+| :--- | :--- | :--- |
+| **Orbit** | Left-Click & Drag | Rotate around terrain |
+| **Orbit** | Scroll Wheel | Zoom camera in and out |
+| **Flight** | Mouse Movement | Look around (Yaw & Pitch) |
+| **Flight** | `W` / `S` | Speed up / Slow down |
+| **Flight** | `A` / `D` | Turn left / Turn right |
+| **Flight** | `Space` / `C` | Ascend / Descend |
 
-## License
+---
 
-MIT
+## 📝 License
+
+Distributed under the MIT License. See `LICENSE` for more information.
