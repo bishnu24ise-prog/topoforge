@@ -987,17 +987,18 @@ async function confirmMapPick() {
 async function fetchSatelliteTiles(bounds) {
     const style = document.getElementById('map-style-select').value;
     let TILE_URL = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
+    let tileSize = 256;
+    
     if (style === 'hybrid') {
-        // High-definition Google Hybrid layer: satellite photo + highways + roads + bridges + names!
-        TILE_URL = 'https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}';
+        // High-definition Google Hybrid layer with Retina scale=2 double-resolution (512x512) tiles!
+        TILE_URL = 'https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}&scale=2';
+        tileSize = 512;
     }
     
     const latSpan = Math.abs(bounds.north - bounds.south);
     // Dynamically calculate optimal zoom to keep grid size around 3x3 to 5x5 tiles
     let zoom = Math.floor(Math.log2(1800 / latSpan));
-    zoom = Math.max(3, Math.min(zoom, 13));
-    
-    const tileSize = 256;
+    zoom = Math.max(3, Math.min(zoom, 15)); // Higher zoom cap (15) for maximum HD close-ups!
 
     const { north, south, east, west } = bounds;
 
