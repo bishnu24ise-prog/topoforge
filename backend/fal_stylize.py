@@ -90,6 +90,6 @@ def _apply_hypsometric_tint(img: Image.Image) -> Image.Image:
 
     # Slight contrast boost to make it pop
     result = ImageEnhance.Contrast(result).enhance(1.15)
-    result = ImageEnhance.Saturation(result).enhance(1.25)
+    result = ImageEnhance.Color(result).enhance(1.25)
 
     return result
