@@ -595,3 +595,29 @@ button:disabled { opacity: 0.35; cursor: not-allowed; transform: none !important
     background: var(--elevated); color: var(--text3);
     cursor: not-allowed; box-shadow: none;
 }
+
+/* ── Premium Select Dropdown ── */
+.premium-select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: rgba(15, 23, 42, 0.6);
+    color: var(--text);
+    font-size: 12.5px;
+    font-family: inherit;
+    transition: all var(--transition);
+    cursor: pointer;
+    outline: none;
+    margin-top: 6px;
+    margin-bottom: 12px;
+    backdrop-filter: blur(10px);
+}
+.premium-select:focus, .premium-select:hover {
+    border-color: rgba(34,211,238,0.4);
+    box-shadow: 0 0 10px rgba(34,211,238,0.1);
+}
+.premium-select option {
+    background: #0f172a;
+    color: var(--text);
+}
