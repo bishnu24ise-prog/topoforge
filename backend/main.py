@@ -160,7 +160,7 @@ async def health():
 @app.get("/api/dem-tile")
 def get_dem_tile(z: int, x: int, y: int):
     """Proxy AWS S3 elevation tiles to bypass browser CORS / COEP restrictions."""
-    url = f"https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png"
+    url = f"https://elevation-tiles-prod.s3.amazonaws.com/terrarium/{z}/{x}/{y}.png"
     try:
         req = urllib.request.Request(
             url,

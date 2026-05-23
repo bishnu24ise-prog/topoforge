@@ -520,9 +520,11 @@ async function fetchDEM() {
         const tilePromises = [];
         for (let y = yMin; y <= yMax; y++) {
             for (let x = xMin; x <= xMax; x++) {
-                const url = `/api/dem-tile?z=${zoom}&x=${x}&y=${y}`;
+                const directUrl = `https://elevation-tiles-prod.s3.amazonaws.com/terrarium/${zoom}/${x}/${y}.png`;
+                const proxyUrl = `/api/dem-tile?z=${zoom}&x=${x}&y=${y}`;
                 tilePromises.push(
-                    loadImage(url)
+                    loadImage(directUrl)
+                        .catch(() => loadImage(proxyUrl)) // Fallback to same-origin proxy if direct fails
                         .then(img => ({ img, x: (x - xMin) * tileSize, y: (y - yMin) * tileSize }))
                         .catch(() => null)
                 );
@@ -631,7 +633,9 @@ function tileToLatLon(x, y, z) {
 function loadImage(url) {
     return new Promise((resolve, reject) => {
         const img = new Image();
-        img.crossOrigin = 'anonymous';
+        if (!url.startsWith('/') && !url.startsWith(window.location.origin)) {
+            img.crossOrigin = 'anonymous';
+        }
         img.onload = () => resolve(img);
         img.onerror = reject;
         img.src = url;
