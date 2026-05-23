@@ -490,9 +490,9 @@ async function fetchDEM() {
 
     const { north, south, east, west } = state.bounds;
     const latSpan = Math.abs(north - south);
-    let zoom = 11;
-    if (latSpan < 0.15) zoom = 13;
-    else if (latSpan < 0.35) zoom = 12;
+    // Dynamically calculate optimal zoom to keep grid size around 3x3 to 5x5 tiles
+    let zoom = Math.floor(Math.log2(1800 / latSpan));
+    zoom = Math.max(3, Math.min(zoom, 13));
 
     showLoading('Fetching elevation tiles...');
     setStatus('Fetching DEM...', 'loading');
@@ -931,10 +931,9 @@ async function fetchSatelliteTiles(bounds) {
     const TILE_URL = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
     
     const latSpan = Math.abs(bounds.north - bounds.south);
-    let zoom = 10;
-    if (latSpan < 0.15) zoom = 13;
-    else if (latSpan < 0.35) zoom = 12;
-    else if (latSpan < 0.8) zoom = 11;
+    // Dynamically calculate optimal zoom to keep grid size around 3x3 to 5x5 tiles
+    let zoom = Math.floor(Math.log2(1800 / latSpan));
+    zoom = Math.max(3, Math.min(zoom, 13));
     
     const tileSize = 256;
 
