@@ -489,7 +489,10 @@ async function fetchDEM() {
     }
 
     const { north, south, east, west } = state.bounds;
-    const zoom = 11;
+    const latSpan = Math.abs(north - south);
+    let zoom = 11;
+    if (latSpan < 0.15) zoom = 13;
+    else if (latSpan < 0.35) zoom = 12;
 
     showLoading('Fetching elevation tiles...');
     setStatus('Fetching DEM...', 'loading');
@@ -922,7 +925,13 @@ async function confirmMapPick() {
 async function fetchSatelliteTiles(bounds) {
     // Use ESRI World Imagery (free, global, no API key)
     const TILE_URL = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
-    const zoom = 10;
+    
+    const latSpan = Math.abs(bounds.north - bounds.south);
+    let zoom = 10;
+    if (latSpan < 0.15) zoom = 13;
+    else if (latSpan < 0.35) zoom = 12;
+    else if (latSpan < 0.8) zoom = 11;
+    
     const tileSize = 256;
 
     const { north, south, east, west } = bounds;
