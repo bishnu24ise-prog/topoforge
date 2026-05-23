@@ -130,7 +130,7 @@ Your role:
                         }
                     },
                     temperature: 0.5, // Faster, more decisive response generation
-                    maxOutputTokens: 300 // Concise, snappy tour-guide descriptions suitable for real-time flight simulation
+                    maxOutputTokens: 1000 // High token headroom to prevent Devanagari (Hindi/Nepali) characters from getting truncated mid-sentence!
                 },
                 systemInstruction: {
                     parts: [{ text: buildSystemPrompt() }]
@@ -222,10 +222,7 @@ Your role:
                     silentFramesCount = 0; // Reset instantly when active voice is detected
                 }
 
-                // If user speaks while guide is speaking, interrupt the guide instantly
-                if (maxAmp > 0.02 && (isPlaying || playbackQueue.length > 0)) {
-                    interrupt();
-                }
+                // Keep audio streaming to the resampler cleanly
 
                 // Resample if needed
                 const outputData = resampleAudio(inputData, audioContext.sampleRate, SEND_SAMPLE_RATE);
