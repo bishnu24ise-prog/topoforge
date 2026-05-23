@@ -124,7 +124,7 @@ Your role:
                     speechConfig: {
                         voiceConfig: {
                             prebuiltVoiceConfig: {
-                                voiceName: "Aoede"
+                                voiceName: "Puck" // High-fidelity, exceptionally warm, clear, and articulate human voice!
                             }
                         }
                     }
@@ -417,7 +417,12 @@ Your role:
 
             // Schedule playback
             const currentTime = audioContext.currentTime;
-            const startTime = Math.max(currentTime, nextPlayTime);
+            let startTime = Math.max(currentTime, nextPlayTime);
+            
+            // Anti-lag: Reset scheduling if network hiccups drift the scheduled time too far into the future!
+            if (startTime - currentTime > 0.25) {
+                startTime = currentTime;
+            }
             source.start(startTime);
 
             // Update next play time for seamless playback
