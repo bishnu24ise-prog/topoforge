@@ -1,6 +1,6 @@
 {
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "https://your-app.onrender.com/api/$1" }
+    { "source": "/api/(.*)", "destination": "https://topoforge-backend.onrender.com/api/$1" }
   ],
   "headers": [
     {
