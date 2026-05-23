@@ -127,7 +127,9 @@ Your role:
                                 voiceName: "Puck" // High-fidelity, exceptionally warm, clear, and articulate human voice!
                             }
                         }
-                    }
+                    },
+                    temperature: 0.5, // Faster, more decisive response generation
+                    maxOutputTokens: 300 // Concise, snappy tour-guide descriptions suitable for real-time flight simulation
                 },
                 systemInstruction: {
                     parts: [{ text: buildSystemPrompt() }]
