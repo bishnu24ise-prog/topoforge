@@ -270,7 +270,11 @@ function setupUI() {
                 
                 const loader = new THREE.TextureLoader();
                 state.colorTexture = loader.load(satCanvas.toDataURL(), () => {
+                    // Set maximum anisotropic filtering and linear interpolation for crisp graphics
                     state.colorTexture.anisotropy = state.renderer.capabilities.getMaxAnisotropy();
+                    state.colorTexture.minFilter = THREE.LinearFilter;
+                    state.colorTexture.magFilter = THREE.LinearFilter;
+                    state.colorTexture.generateMipmaps = false;
                     state.colorTexture.needsUpdate = true;
 
                     if (state.terrain) {
@@ -429,8 +433,11 @@ async function uploadFile(file) {
 function loadTexture(base64) {
     const loader = new THREE.TextureLoader();
     state.colorTexture = loader.load('data:image/jpeg;base64,' + base64, () => {
-        // Set maximum anisotropic filtering for razor-sharp graphics at all angles
+        // Set maximum anisotropic filtering and linear interpolation for crisp graphics
         state.colorTexture.anisotropy = state.renderer.capabilities.getMaxAnisotropy();
+        state.colorTexture.minFilter = THREE.LinearFilter;
+        state.colorTexture.magFilter = THREE.LinearFilter;
+        state.colorTexture.generateMipmaps = false;
         state.colorTexture.needsUpdate = true;
         
         // Create initial flat terrain
@@ -765,8 +772,11 @@ async function stylizeTexture() {
         state.colorTexture = loader.load(
             data.stylized_url,
             () => {
-                // Max anisotropic filtering
+                // Max anisotropic filtering and linear filtering for pixel-perfect sharpness
                 state.colorTexture.anisotropy = state.renderer.capabilities.getMaxAnisotropy();
+                state.colorTexture.minFilter = THREE.LinearFilter;
+                state.colorTexture.magFilter = THREE.LinearFilter;
+                state.colorTexture.generateMipmaps = false;
                 state.colorTexture.needsUpdate = true;
                 
                 createTerrain();
@@ -956,8 +966,11 @@ async function confirmMapPick() {
         // 2. Load as Three.js texture
         const loader = new THREE.TextureLoader();
         state.colorTexture = loader.load(satCanvas.toDataURL(), () => {
-            // Max anisotropic filtering
+            // Max anisotropic filtering and linear filtering for pixel-perfect sharpness
             state.colorTexture.anisotropy = state.renderer.capabilities.getMaxAnisotropy();
+            state.colorTexture.minFilter = THREE.LinearFilter;
+            state.colorTexture.magFilter = THREE.LinearFilter;
+            state.colorTexture.generateMipmaps = false;
             state.colorTexture.needsUpdate = true;
             
             // Flat terrain first
@@ -1021,6 +1034,10 @@ async function fetchSatelliteTiles(bounds) {
     canvas.width  = width;
     canvas.height = height;
     const ctx = canvas.getContext('2d');
+    
+    // Enable ultra-high-quality image smoothing when drawing combined tiles
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = 'high';
 
     // Fill with a dark fallback color
     ctx.fillStyle = '#1a2a3a';
