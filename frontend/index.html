@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TopoForge - Explore Terrain in 3D</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌍</text></svg>">
+    <link rel="stylesheet" href="/static/style.css">
+    <!-- Leaflet.js for world map picker -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+</head>
+
+<body>
+    <div id="container"></div>
+
+    <!-- Control Panel -->
+    <div id="controls">
+        <h1>🌍 TopoForge</h1>
+        <p class="subtitle">Upload a map or pick any place on Earth.</p>
+
+        <!-- Upload Section -->
+        <section id="upload-section">
+            <h3 data-step-label="Upload Map"></h3>
+            <div id="drop-zone">
+                <p>Drop GeoTIFF or image<br><small>or click to browse</small></p>
+                <input type="file" id="file-input" accept=".tif,.tiff,.jpg,.jpeg,.png,.webp">
+            </div>
+            <div class="upload-divider"><span>or</span></div>
+            <button class="map-pick-btn" id="open-map-btn">🗺️ Pick from World Map</button>
+            <div id="file-info" class="hidden">
+                <span id="file-name"></span>
+                <span id="file-bounds" class="badge"></span>
+            </div>
+        </section>
+
+        <!-- Bounds Section (for non-GeoTIFF) -->
+        <section id="bounds-section" class="hidden">
+            <h3 data-step-label="Set Bounds"></h3>
+            <div class="bounds-grid">
+                <div class="input-group">
+                    <label>North</label>
+                    <input type="number" id="north" step="0.0001" placeholder="e.g. 22.5">
+                </div>
+                <div class="input-group">
+                    <label>South</label>
+                    <input type="number" id="south" step="0.0001" placeholder="e.g. 22.5">
+                </div>
+                <div class="input-group">
+                    <label>West</label>
+                    <input type="number" id="west" step="0.0001" placeholder="e.g. 22.5">
+                </div>
+                <div class="input-group">
+                    <label>East</label>
+                    <input type="number" id="east" step="0.0001" placeholder="e.g. 22.5">
+                </div>
+            </div>
+            <button class="secondary" id="extract-bounds-btn">🤖 Extract with Gemini</button>
+        </section>
+
+        <!-- Terrain Section -->
+        <section id="terrain-section" class="hidden">
+            <h3 data-step-label="Build Terrain"></h3>
+            <button class="primary" id="fetch-dem-btn">Fetch Real DEM</button>
+            <button class="secondary" id="stylize-btn">🎨 Stylize Texture</button>
+        </section>
+
+        <!-- View Controls -->
+        <section id="view-section" class="hidden">
+            <h3 data-step-label="Explore"></h3>
+            <div class="slider-group">
+                <label>Elevation Scale</label>
+                <input type="range" id="exag" min="1" max="80" value="7">
+                <span class="value" id="exag-val">7×</span>
+            </div>
+            <div class="slider-group">
+                <label>Rotation Speed</label>
+                <input type="range" id="rotation" min="0" max="100" value="0">
+                <span class="value" id="rotation-val">0%</span>
+            </div>
+            <div class="slider-group">
+                <label>Plane Volume</label>
+                <input type="range" id="plane-volume" min="0" max="100" value="50">
+                <span class="value" id="plane-volume-val">50%</span>
+            </div>
+            <button class="secondary" id="fly-btn">✈️ Fly Plane</button>
+        </section>
+
+        <!-- Lighting Controls -->
+        <section id="lighting-section" class="hidden">
+            <h3 data-step-label="Lighting"></h3>
+            <div class="slider-group">
+                <label>Sun Azimuth</label>
+                <input type="range" id="sun-azimuth" min="0" max="360" value="135">
+                <span class="value" id="sun-azimuth-val">135°</span>
+            </div>
+            <div class="slider-group">
+                <label>Sun Elevation</label>
+                <input type="range" id="sun-elevation" min="10" max="90" value="47">
+                <span class="value" id="sun-elevation-val">47°</span>
+            </div>
+            <button class="secondary" id="reset-sun-btn">Reset to Default</button>
+        </section>
+
+        <!-- Voice Chat Section -->
+        <section id="voice-section" class="hidden">
+            <h3 data-step-label="Tour Guide"></h3>
+            <button class="secondary" id="voice-btn">🎤 Start Voice Chat</button>
+            <div id="voice-status" class="hidden">
+                <span class="voice-indicator"></span>
+                <span id="voice-status-text">Listening...</span>
+            </div>
+        </section>
+
+        <div id="status"></div>
+    </div>
+
+    <!-- Info Panel -->
+    <div id="info">
+        <strong>Controls:</strong>
+        <kbd>Drag</kbd> Rotate · <kbd>Scroll</kbd> Zoom ·
+        Fly: <kbd>WASD</kbd> <kbd>Space</kbd>/<kbd>C</kbd>
+    </div>
+
+    <!-- Map Picker Modal -->
+    <div id="map-modal" class="hidden">
+        <div id="map-picker-card">
+            <div id="map-picker-header">
+                <div>
+                    <h2>🌍 Pick a Location</h2>
+                    <p>Click anywhere on the map to select an area</p>
+                </div>
+                <button id="close-map-btn" aria-label="Close map picker">✕</button>
+            </div>
+            <div id="leaflet-map"></div>
+            <div id="map-picker-controls">
+                <div id="map-size-control">
+                    <div class="map-size-label">
+                        <span>📐 Area Size</span>
+                        <span id="map-size-display">~0.5° × 0.5°</span>
+                    </div>
+                    <input type="range" id="map-size-slider" min="1" max="20" value="5" step="1">
+                    <div class="map-size-hints"><span>City</span><span>Region</span><span>Country</span></div>
+                </div>
+                <div id="map-location-info" class="hidden">
+                    <span id="map-coords-display"></span>
+                    <span id="map-area-display" class="map-area-badge"></span>
+                </div>
+                <button id="confirm-map-btn" class="map-confirm-btn" disabled>🏔️ Build This Terrain</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading" class="hidden">
+        <div class="spinner"></div>
+        <p id="loading-text">Loading...</p>
+    </div>
+
+    <!-- Leaflet.js -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="/static/voice.js"></script>
+    <script src="/static/app.js"></script>
+</body>
+
+</html>
