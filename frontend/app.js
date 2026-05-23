@@ -694,10 +694,26 @@ async function stylizeTexture() {
     btn.disabled = true;
     btn.textContent = '🎨 Stylizing...';
 
-    showLoading('Stylizing texture locally...');
-    setStatus('Applying hypsometric tinting...', 'loading');
+    showLoading('Stylizing texture...');
+    setStatus('Applying styling...', 'loading');
 
     try {
+        // For map picks, upload the satellite canvas first so backend has the file to stylize
+        if (state.fileId.startsWith('map-') && state.satCanvas) {
+            setStatus('Caching map on server...', 'loading');
+            const blob = await new Promise(resolve => state.satCanvas.toBlob(resolve, 'image/jpeg', 0.9));
+            const formData = new FormData();
+            formData.append('file', blob, `${state.fileId}.jpg`);
+            
+            const uploadRes = await fetch('/api/upload', {
+                method: 'POST',
+                body: formData
+            });
+            if (!uploadRes.ok) throw new Error('Failed to cache map on server');
+            const uploadData = await uploadRes.json();
+            state.fileId = uploadData.file_id; // Set new backend-recognized fileId
+        }
+
         const response = await fetch(`/api/stylize?file_id=${state.fileId}`, {
             method: 'POST'
         });
@@ -898,6 +914,7 @@ async function confirmMapPick() {
     try {
         // 1. Fetch satellite texture
         const satCanvas = await fetchSatelliteTiles(bounds);
+        state.satCanvas = satCanvas;
 
         // 2. Load as Three.js texture
         const loader = new THREE.TextureLoader();

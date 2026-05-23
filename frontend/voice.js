@@ -188,7 +188,7 @@ Your role:
             });
 
             // Load AudioWorklet module
-            await audioContext.audioWorklet.addModule('/static/audio-processor.js');
+            await audioContext.audioWorklet.addModule('./audio-processor.js');
 
             sourceNode = audioContext.createMediaStreamSource(mediaStream);
             workletNode = new AudioWorkletNode(audioContext, 'audio-capture-processor');
