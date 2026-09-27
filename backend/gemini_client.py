@@ -125,7 +125,7 @@ async def extract_bounds_from_image(image_path: str) -> dict:
 
     async def _call():
         return await client.aio.models.generate_content(
-            model="gemini-2.0-flash",          # Fastest model — no thinking overhead
+            model="gemini-2.5-flash",          # Fast model — no thinking overhead
             contents=[
                 types.Part.from_bytes(data=image_data, mime_type=mime_type),
                 prompt
