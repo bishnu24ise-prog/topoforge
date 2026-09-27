@@ -856,22 +856,42 @@ function openMapPicker() {
 
     // Init Leaflet only once
     if (!mapState.leaflet) {
-        // Dark CartoDB tiles — free, no API key
+        // OpenStreetMap tiles — free, no API key required
         mapState.leaflet = L.map('leaflet-map', {
             center: [20.5937, 78.9629], // Center directly on India
             zoom: 4,                     // Zoomed closer so it's super clear
             zoomControl: true
         });
 
-        L.tileLayer(
-            'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+        // Primary: OpenStreetMap (always free, no API key)
+        const osmLayer = L.tileLayer(
+            'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
             {
-                attribution: '© <a href="https://carto.com/">CARTO</a> © <a href="https://www.openstreetmap.org/">OSM</a>',
-                subdomains: 'abcd',
-                maxZoom: 18,
+                attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                subdomains: 'abc',
+                maxZoom: 19,
                 crossOrigin: true
             }
-        ).addTo(mapState.leaflet);
+        );
+
+        // Dark overlay style via Stadia Maps (free, no API key for moderate use)
+        const darkLayer = L.tileLayer(
+            'https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png',
+            {
+                attribution: '© <a href="https://stadiamaps.com/">Stadia Maps</a> © <a href="https://www.openstreetmap.org/copyright">OSM</a>',
+                maxZoom: 20,
+                crossOrigin: true
+            }
+        );
+
+        // Try dark layer first, fall back to OSM if tiles fail
+        darkLayer.on('tileerror', function() {
+            if (mapState.leaflet.hasLayer(darkLayer)) {
+                mapState.leaflet.removeLayer(darkLayer);
+                osmLayer.addTo(mapState.leaflet);
+            }
+        });
+        darkLayer.addTo(mapState.leaflet);
 
         mapState.leaflet.on('click', onMapClick);
     }
