@@ -534,6 +534,11 @@ button:disabled { opacity: 0.35; cursor: not-allowed; transform: none !important
 
 #leaflet-map { height: 420px; width: 100%; background: #0a0a1a; }
 
+/* Invert OSM tiles to dark theme — no API key needed */
+#leaflet-map .leaflet-tile-pane {
+    filter: invert(1) hue-rotate(180deg) brightness(0.85) saturate(0.7);
+}
+
 .leaflet-control-attribution { background: rgba(0,0,0,0.7) !important; color: #444 !important; font-size: 9px !important; }
 .leaflet-control-attribution a { color: var(--accent) !important; }
 

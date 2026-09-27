@@ -856,15 +856,15 @@ function openMapPicker() {
 
     // Init Leaflet only once
     if (!mapState.leaflet) {
-        // OpenStreetMap tiles — free, no API key required
+        // OpenStreetMap tiles — 100% free, zero API key required
         mapState.leaflet = L.map('leaflet-map', {
-            center: [20.5937, 78.9629], // Center directly on India
-            zoom: 4,                     // Zoomed closer so it's super clear
+            center: [20.5937, 78.9629],
+            zoom: 4,
             zoomControl: true
         });
 
-        // Primary: OpenStreetMap (always free, no API key)
-        const osmLayer = L.tileLayer(
+        // OpenStreetMap standard tiles — always free, no key needed
+        L.tileLayer(
             'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
             {
                 attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
@@ -872,26 +872,7 @@ function openMapPicker() {
                 maxZoom: 19,
                 crossOrigin: true
             }
-        );
-
-        // Dark overlay style via Stadia Maps (free, no API key for moderate use)
-        const darkLayer = L.tileLayer(
-            'https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png',
-            {
-                attribution: '© <a href="https://stadiamaps.com/">Stadia Maps</a> © <a href="https://www.openstreetmap.org/copyright">OSM</a>',
-                maxZoom: 20,
-                crossOrigin: true
-            }
-        );
-
-        // Try dark layer first, fall back to OSM if tiles fail
-        darkLayer.on('tileerror', function() {
-            if (mapState.leaflet.hasLayer(darkLayer)) {
-                mapState.leaflet.removeLayer(darkLayer);
-                osmLayer.addTo(mapState.leaflet);
-            }
-        });
-        darkLayer.addTo(mapState.leaflet);
+        ).addTo(mapState.leaflet);
 
         mapState.leaflet.on('click', onMapClick);
     }
