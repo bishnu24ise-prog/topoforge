@@ -145,17 +145,68 @@ async def extract_bounds_from_image(image_path: str) -> dict:
     except asyncio.TimeoutError:
         raise RuntimeError("Gemini timed out after 8s — please try again")
 
-    # Parse JSON from response
-    import json
-    text = response.text.strip()
+    return _parse_bounds_json(response.text)
 
-    # Strip any accidental markdown fences
-    if text.startswith("```"):
-        text = text.split("```")[1]
-        if text.startswith("json"):
-            text = text[4:]
 
-    return json.loads(text.strip())
+def _parse_bounds_json(raw: str) -> dict:
+    """
+    Robustly extract a bounds dict from Gemini's raw text response.
+
+    Tries three strategies in order:
+      1. Regex — grab the first {...} block and parse it.
+      2. Markdown strip — remove ```json fences then parse.
+      3. Float scan — find exactly 4 numbers in north/south/east/west order.
+
+    Raises ValueError with the raw text on total failure.
+    """
+    import json, re
+
+    text = raw.strip()
+
+    # ── Strategy 1: extract first JSON object with regex ──────────────────
+    m = re.search(r'\{[^{}]*\}', text, re.DOTALL)
+    if m:
+        try:
+            data = json.loads(m.group())
+            return _validate_bounds(data)
+        except Exception:
+            pass
+
+    # ── Strategy 2: strip markdown fences ────────────────────────────────
+    clean = re.sub(r'```(?:json)?', '', text).replace('```', '').strip()
+    try:
+        data = json.loads(clean)
+        return _validate_bounds(data)
+    except Exception:
+        pass
+
+    # ── Strategy 3: scan for 4 floats labelled north/south/east/west ─────
+    keys   = ["north", "south", "east", "west"]
+    values = {}
+    for key in keys:
+        match = re.search(rf'"{key}"\s*:\s*(-?\d+(?:\.\d+)?)', text, re.IGNORECASE)
+        if match:
+            values[key] = float(match.group(1))
+
+    if len(values) == 4:
+        return _validate_bounds(values)
+
+    # All strategies failed — log and raise
+    logger.error("Gemini bounds parse failed. Raw response:\n%s", text)
+    raise ValueError(
+        f"Could not parse bounds from Gemini response. "
+        f"Raw text: {text[:200]!r}"
+    )
+
+
+def _validate_bounds(data: dict) -> dict:
+    """Ensure all four bound keys exist and are numeric."""
+    required = {"north", "south", "east", "west"}
+    missing = required - set(data.keys())
+    if missing:
+        raise ValueError(f"Missing bound keys: {missing}")
+    return {k: float(data[k]) for k in required}
+
 
 
 async def generate_narration(location_info: dict, visible_features: list[str]) -> str:
