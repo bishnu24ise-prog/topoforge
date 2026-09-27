@@ -125,25 +125,28 @@ async def extract_bounds_from_image(image_path: str) -> dict:
 
     async def _call():
         return await client.aio.models.generate_content(
-            model="gemini-2.5-flash",          # Fast model — no thinking overhead
+            model="gemini-2.5-flash",
             contents=[
                 types.Part.from_bytes(data=image_data, mime_type=mime_type),
                 prompt
             ],
             config=types.GenerateContentConfig(
-                temperature=0,                  # Deterministic — no randomness needed
-                max_output_tokens=60,           # Bounds JSON is ~50 tokens max
+                temperature=0,                   # Deterministic output
+                max_output_tokens=256,           # Safe headroom — JSON is ~50 tokens but thinking eats some
+                thinking_config=types.ThinkingConfig(
+                    thinking_budget=0            # Disable internal reasoning — not needed for JSON extraction
+                ),
             )
         )
 
-    # Hard 8-second timeout so it never hangs
+    # Timeout: 15s — enough for flash without thinking, even under moderate load
     try:
         response = await asyncio.wait_for(
             _call_with_retry(_call),
-            timeout=8.0
+            timeout=15.0
         )
     except asyncio.TimeoutError:
-        raise RuntimeError("Gemini timed out after 8s — please try again")
+        raise RuntimeError("Gemini timed out after 15s — please try again")
 
     return _parse_bounds_json(response.text)
 
