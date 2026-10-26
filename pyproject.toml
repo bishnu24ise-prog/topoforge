@@ -1,7 +1,7 @@
-[project]
+﻿[project]
 name = "topoforge"
-version = "1.0.0"
-description = "Upload any map. Explore terrain in 3D with an AI tour guide."
+version = "2.1.0"
+description = "Explore any place on Earth as real 3D terrain with AI Voice Guide and Wispr Flow voice controls."
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
@@ -15,3 +15,7 @@ dependencies = [
     "uvicorn>=0.40.0",
     "supabase>=2.10.0",
 ]
+
+[project.urls]
+Homepage = "https://github.com/bishnu24ise-prog/TopoForge"
+Repository = "https://github.com/bishnu24ise-prog/TopoForge.git"

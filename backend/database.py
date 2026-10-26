@@ -1,7 +1,7 @@
-"""
-TopoForge — Database layer using Supabase (free tier PostgreSQL).
+﻿"""
+TopoForge â€” Database layer using Supabase (free tier PostgreSQL).
 Stores: upload sessions, map metadata, view counts.
-Uses supabase-py which talks to Supabase REST API — no raw SQL needed.
+Uses supabase-py which talks to Supabase REST API â€” no raw SQL needed.
 """
 
 import os
@@ -30,9 +30,9 @@ def get_client() -> "Client | None":
     return _client
 
 
-# ─────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # Uploads table
-# ─────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def save_upload(file_id: str, filename: str, file_type: str, has_bounds: bool, bounds: dict | None = None):
     """
@@ -41,7 +41,7 @@ def save_upload(file_id: str, filename: str, file_type: str, has_bounds: bool, b
     """
     db = get_client()
     if not db:
-        return  # DB optional — app still works without it
+        return  # DB optional â€” app still works without it
 
     try:
         db.table("uploads").insert({
@@ -87,9 +87,9 @@ def get_recent_uploads(limit: int = 10) -> list[dict]:
         return []
 
 
-# ─────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # Voice sessions table
-# ─────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def save_voice_session(file_id: str, duration_seconds: int):
     """Record that a user started a voice tour and how long it lasted."""
@@ -104,3 +104,4 @@ def save_voice_session(file_id: str, duration_seconds: int):
         }).execute()
     except Exception as e:
         print(f"[DB] save_voice_session failed (non-fatal): {e}")
+

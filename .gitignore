@@ -1,60 +1,49 @@
-# Environment
-.env
-.venv/
-venv/
-env/
-ENV/
-
-# Python
+﻿# Python
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
 .Python
+env/
 build/
+develop-eggs/
 dist/
-*.egg-info/
+downloads/
+eggs/
 .eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
 *.egg
 
+# Virtual environments
+.venv/
+venv/
+ENV/
+
+# Environment variables & secrets
+.env
+.env.local
+.env.*.local
+
 # IDE
-.vscode/
 .idea/
+.vscode/
 *.swp
 *.swo
+
+# OS
 .DS_Store
+Thumbs.db
 
-# Data files (large)
-data/*.tif
-data/*.tiff
-data/*.geotiff
-data/*.pdf
-*.zip
-
-# Uploads (runtime data)
+# Uploads & Temp
 uploads/
-
-# Generated outputs
-outputs/
-*.png
-*.jpg
-!frontend/assets/*.png
-!frontend/assets/*.jpg
-!assets/*.png
-!assets/*.jpg
-
-# Logs
-*.log
-logs/
-
-# Node (if added later)
-node_modules/
-
-# Misc
-.cache/
-tmp/
-temp/
-
-# Claude
-CLAUDE.md
-PLAN.md
+*.tmp
+.pytest_cache/
+.coverage
+htmlcov/

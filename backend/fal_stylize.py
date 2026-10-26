@@ -1,4 +1,4 @@
-"""
+﻿"""
 Free-tier texture stylization using canvas-based hypsometric tinting.
 Uses local PIL-based hypsometric tinting. No external API needed.
 No API key or cost required.
@@ -10,7 +10,7 @@ from pathlib import Path
 from io import BytesIO
 from PIL import Image, ImageEnhance, ImageFilter
 
-HAS_FAL = False  # Always False — we use local processing
+HAS_FAL = False  # Always False â€” we use local processing
 
 
 def stylize_texture(image_path: str, style: str = "realistic") -> str:
@@ -133,7 +133,7 @@ def _apply_preset_tint(img: Image.Image, style: str) -> Image.Image:
 
     # Compute luminance (proxy for elevation on topo maps)
     lum = 0.299 * arr[:, :, 0] + 0.587 * arr[:, :, 1] + 0.114 * arr[:, :, 2]
-    lum_norm = lum / 255.0  # 0.0 (dark) → 1.0 (bright)
+    lum_norm = lum / 255.0  # 0.0 (dark) â†’ 1.0 (bright)
 
     # Interpolate color for each pixel
     out = np.zeros_like(arr)
@@ -165,3 +165,4 @@ def _apply_preset_tint(img: Image.Image, style: str) -> Image.Image:
         result = ImageEnhance.Color(result).enhance(saturation_factor)
 
     return result
+

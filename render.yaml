@@ -1,4 +1,4 @@
-services:
+﻿services:
   - type: web
     name: topoforge-backend
     runtime: python
@@ -6,6 +6,8 @@ services:
     startCommand: uv run uvicorn backend.main:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: GEMINI_API_KEY
+        sync: false
+      - key: WISPR_FLOW_API_KEY
         sync: false
       - key: SUPABASE_URL
         sync: false

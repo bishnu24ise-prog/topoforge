@@ -1,4 +1,4 @@
-"""
+﻿"""
 Terrain processing - GeoTIFF extraction and heightmap generation
 """
 
@@ -149,3 +149,4 @@ def process_heightmap(file_path: str, target_size: int = 512) -> str:
     buffer.seek(0)
     
     return base64.b64encode(buffer.read()).decode('utf-8')
+
