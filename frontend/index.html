@@ -178,15 +178,15 @@
 
             <!-- Voice Section -->
             <section id="voice-section" class="hidden">
-                <h3 data-step-label="Voice AI"></h3>
-                <button class="btn-primary" id="sidebar-wispr-btn" style="background: linear-gradient(135deg, #06b6d4, #6366f1); margin-bottom: 8px;">
-                    🎙️ Voice Command (Wispr Flow)
-                </button>
-                <button class="btn-secondary" id="voice-btn">🎤 Start AI Tour Guide</button>
+                <h3 data-step-label="Gemini Voice Tour"></h3>
+                <button class="btn-secondary" id="voice-btn">🎤 Start Gemini AI Voice Chat</button>
                 <div id="voice-status" class="hidden">
                     <span class="voice-indicator"></span>
                     <span id="voice-status-text">Listening...</span>
                 </div>
+                <button class="btn-ghost" id="sidebar-wispr-btn" style="margin-top: 8px; width: 100%; border: 1px solid var(--border); font-size: 11px;">
+                    ⚡ Voice Commands (Wispr Flow)
+                </button>
             </section>
 
         </div><!-- end sidebar-body -->
@@ -200,7 +200,7 @@
 
     <!-- Voice Command HUD (Wispr Flow) -->
     <div id="wispr-hud">
-        <button id="wispr-mic-btn" class="wispr-mic-btn" title="Click or Press 'V' to speak a command">
+        <button id="wispr-mic-btn" class="wispr-mic-btn" title="Click or Press 'V' to speak a voice command">
             <span class="wispr-mic-icon">🎙️</span>
             <span class="wispr-mic-text">Voice Command</span>
             <kbd class="wispr-kbd">V</kbd>

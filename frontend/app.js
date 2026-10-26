@@ -300,7 +300,7 @@ function setupUI() {
     setupMouseControls();
 
     // Keyboard controls
-    // Keyboard controls + Wispr Flow Voice shortcut 'V'
+    // Keyboard controls + Voice Command Hotkey (V)
     document.addEventListener('keydown', (e) => {
         if ((e.key === 'v' || e.key === 'V') && !['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName)) {
             if (typeof WisprCommands !== 'undefined') {
@@ -312,19 +312,15 @@ function setupUI() {
         state.keys[e.code] = true;
     });
 
-    // Initialize Wispr Flow voice command controller
+    // Initialize Wispr Flow voice command controller safely
     if (typeof WisprCommands !== 'undefined') {
         WisprCommands.init(handleVoiceCommandExecution, updateWisprHUDState);
 
         const micBtn = document.getElementById('wispr-mic-btn');
-        if (micBtn) {
-            micBtn.addEventListener('click', () => WisprCommands.toggle());
-        }
+        if (micBtn) micBtn.addEventListener('click', () => WisprCommands.toggle());
 
         const sidebarWisprBtn = document.getElementById('sidebar-wispr-btn');
-        if (sidebarWisprBtn) {
-            sidebarWisprBtn.addEventListener('click', () => WisprCommands.toggle());
-        }
+        if (sidebarWisprBtn) sidebarWisprBtn.addEventListener('click', () => WisprCommands.toggle());
     }
     document.addEventListener('keyup', (e) => state.keys[e.code] = false);
 
@@ -1358,4 +1354,68 @@ function hideLoading() {
 // ===========================================
 // START
 // ===========================================
+
+// ===========================================
+// WISPR FLOW VOICE COMMAND INTEGRATION
+// ===========================================
+function updateWisprHUDState(status) {
+    const micBtn = document.getElementById('wispr-mic-btn');
+    const pill = document.getElementById('wispr-feedback-pill');
+    const textEl = document.getElementById('wispr-feedback-text');
+
+    if (!micBtn || !pill || !textEl) return;
+
+    if (status.state === 'listening') {
+        micBtn.classList.add('listening');
+        pill.classList.remove('hidden', 'success', 'error');
+        textEl.textContent = '🎙️ Listening...';
+    } else if (status.state === 'processing') {
+        micBtn.classList.remove('listening');
+        pill.classList.remove('hidden', 'success', 'error');
+        textEl.textContent = `⚡ Processing: ${status.message}`;
+    } else if (status.state === 'success') {
+        micBtn.classList.remove('listening');
+        pill.classList.remove('hidden', 'error');
+        pill.classList.add('success');
+        textEl.textContent = `✨ ${status.message}`;
+        setStatus(status.message, 'success');
+        setTimeout(() => {
+            if (typeof WisprCommands !== 'undefined' && !WisprCommands.isActive()) {
+                pill.classList.add('hidden');
+            }
+        }, 4000);
+    } else if (status.state === 'error') {
+        micBtn.classList.remove('listening');
+        pill.classList.remove('hidden', 'success');
+        pill.classList.add('error');
+        textEl.textContent = `⚠️ ${status.message}`;
+        setTimeout(() => {
+            if (typeof WisprCommands !== 'undefined' && !WisprCommands.isActive()) {
+                pill.classList.add('hidden');
+            }
+        }, 3500);
+    } else {
+        micBtn.classList.remove('listening');
+        pill.classList.add('hidden');
+    }
+}
+
+function handleVoiceCommandExecution(cmd) {
+    console.log('[Voice Command Action Handled]:', cmd);
+    if (!cmd) return;
+
+    // Flight mode dynamic speed and altitude handling
+    if (state.cameraMode === 'fly' && state.planeMode && state.plane) {
+        if (cmd.action === 'speed_up') {
+            state.flightSpeedMultiplier = Math.min(3.5, (state.flightSpeedMultiplier || 1.0) * 1.4);
+        } else if (cmd.action === 'slow_down') {
+            state.flightSpeedMultiplier = Math.max(0.4, (state.flightSpeedMultiplier || 1.0) * 0.7);
+        } else if (cmd.action === 'ascend') {
+            state.plane.position.y += 18;
+        } else if (cmd.action === 'descend') {
+            state.plane.position.y = Math.max(10, state.plane.position.y - 18);
+        }
+    }
+}
+
 init();
