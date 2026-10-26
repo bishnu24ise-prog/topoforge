@@ -1,15 +1,10 @@
--- =====================================================
--- TopoForge Database Schema (Supabase PostgreSQL)
--- v2.1 Update: Upload Sessions & Voice Tour Telemetry
--- =====================================================
+-- TopoForge — Supabase database setup
+-- Paste this entire file into: Supabase Dashboard → SQL Editor → Run
 
--- TopoForge â€” Supabase database setup
--- Paste this entire file into: Supabase Dashboard â†’ SQL Editor â†’ Run
-
--- â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+-- ─────────────────────────────────────────
 -- Table 1: uploads
 -- Tracks every map file uploaded
--- â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+-- ─────────────────────────────────────────
 create table if not exists uploads (
   id           bigserial primary key,
   file_id      text not null unique,      -- 8-char UUID prefix (e.g. "a3f2b1c0")
@@ -21,10 +16,10 @@ create table if not exists uploads (
   view_count   integer default 0
 );
 
--- â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+-- ─────────────────────────────────────────
 -- Table 2: voice_sessions
 -- Tracks AI voice tour sessions
--- â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+-- ─────────────────────────────────────────
 create table if not exists voice_sessions (
   id               bigserial primary key,
   file_id          text not null,
@@ -32,18 +27,18 @@ create table if not exists voice_sessions (
   created_at       timestamptz default now()
 );
 
--- â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+-- ─────────────────────────────────────────
 -- Function: increment_view_count
 -- Called by the backend when stylize is triggered
--- â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+-- ─────────────────────────────────────────
 create or replace function increment_view_count(p_file_id text)
 returns void as $$
   update uploads set view_count = view_count + 1 where file_id = p_file_id;
 $$ language sql;
 
--- â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+-- ─────────────────────────────────────────
 -- Row Level Security (keep data public-read for the app)
--- â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+-- ─────────────────────────────────────────
 alter table uploads enable row level security;
 alter table voice_sessions enable row level security;
 
@@ -54,4 +49,3 @@ create policy "allow_update" on uploads for update using (true);
 
 create policy "allow_read" on voice_sessions for select using (true);
 create policy "allow_insert" on voice_sessions for insert with check (true);
-

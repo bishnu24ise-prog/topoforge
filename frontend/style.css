@@ -1,6 +1,6 @@
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   TOPOFORGE â€” PREMIUM HACKATHON UI
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+/* ═══════════════════════════════════════════
+   TOPOFORGE — PREMIUM HACKATHON UI
+═══════════════════════════════════════════ */
 
 /* Tokens */
 :root {
@@ -34,7 +34,7 @@ body {
     height: 100vh;
 }
 
-/* â”€â”€ 3D Canvas â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── 3D Canvas ─────────────────────────────── */
 #container {
     position: fixed;
     inset: 0;
@@ -67,7 +67,7 @@ body {
     to   { transform: translate(30px, 20px); }
 }
 
-/* â”€â”€ Sidebar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── Sidebar ───────────────────────────────── */
 #controls {
     position: fixed;
     top: 0; left: 0;
@@ -94,7 +94,7 @@ body {
 #sidebar-body::-webkit-scrollbar { width: 4px; }
 #sidebar-body::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 2px; }
 
-/* â”€â”€ Logo Header â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── Logo Header ───────────────────────────── */
 #sidebar-header {
     padding: 20px 16px 0;
     flex-shrink: 0;
@@ -159,7 +159,7 @@ body {
     margin: 0 -16px 16px;
 }
 
-/* â”€â”€ Sections â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── Sections ──────────────────────────────── */
 #controls section {
     margin-bottom: 4px;
     padding: 14px 0;
@@ -187,7 +187,7 @@ body {
     flex-shrink: 0;
 }
 
-/* â”€â”€ Drop Zone â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── Drop Zone ─────────────────────────────── */
 #drop-zone {
     border: 1.5px dashed rgba(255,255,255,0.1);
     border-radius: var(--radius);
@@ -222,7 +222,7 @@ body {
 }
 #drop-zone input { display: none; }
 
-/* â”€â”€ Divider â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── Divider ───────────────────────────────── */
 .upload-divider {
     display: flex; align-items: center; gap: 10px;
     color: var(--text3); font-size: 10px;
@@ -232,7 +232,7 @@ body {
     content: ''; flex: 1; height: 1px; background: var(--border);
 }
 
-/* â”€â”€ Map Pick Button â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── Map Pick Button ───────────────────────── */
 .map-pick-btn {
     width: 100%; padding: 11px 14px;
     display: flex; align-items: center; justify-content: center; gap: 8px;
@@ -253,7 +253,7 @@ body {
     transform: translateY(-1px);
 }
 
-/* â”€â”€ File Info â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── File Info ─────────────────────────────── */
 #file-info {
     margin-top: 10px;
     padding: 8px 12px;
@@ -265,7 +265,7 @@ body {
 }
 #file-name { color: var(--text2); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-/* â”€â”€ Badge â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── Badge ─────────────────────────────────── */
 .badge {
     display: inline-block;
     background: rgba(129,140,248,0.15);
@@ -279,7 +279,7 @@ body {
     white-space: nowrap;
 }
 
-/* â”€â”€ Inputs â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── Inputs ────────────────────────────────── */
 .input-group { margin-bottom: 8px; }
 .input-group label {
     display: block; font-size: 10px; font-weight: 500;
@@ -302,7 +302,7 @@ body {
 }
 .bounds-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
 
-/* â”€â”€ Sliders â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── Sliders ───────────────────────────────── */
 .slider-group { margin-bottom: 14px; }
 .slider-header {
     display: flex; justify-content: space-between; align-items: center;
@@ -326,7 +326,7 @@ body {
 }
 .slider-group input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
 
-/* â”€â”€ Buttons â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── Buttons ───────────────────────────────── */
 button { cursor: pointer; font-family: inherit; border: none; transition: all var(--transition); margin-bottom: 8px; }
 
 .btn-primary {
@@ -372,7 +372,7 @@ button { cursor: pointer; font-family: inherit; border: none; transition: all va
 
 button:disabled { opacity: 0.35; cursor: not-allowed; transform: none !important; }
 
-/* â”€â”€ Status Bar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── Status Bar ────────────────────────────── */
 #status-bar {
     flex-shrink: 0;
     padding: 10px 16px 14px;
@@ -394,7 +394,7 @@ button:disabled { opacity: 0.35; cursor: not-allowed; transform: none !important
 #status.success { color: var(--accent); }
 #status.loading { color: #fbbf24; }
 
-/* â”€â”€ Controls Info â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── Controls Info ─────────────────────────── */
 #info {
     position: fixed;
     bottom: 20px;
@@ -420,7 +420,7 @@ button:disabled { opacity: 0.35; cursor: not-allowed; transform: none !important
     color: var(--text2);
 }
 
-/* â”€â”€ Voice â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── Voice ─────────────────────────────────── */
 #voice-status {
     display: flex; align-items: center; gap: 8px;
     padding: 8px 12px;
@@ -447,7 +447,7 @@ button:disabled { opacity: 0.35; cursor: not-allowed; transform: none !important
     color: #fca5a5;
 }
 
-/* â”€â”€ Loading Overlay â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── Loading Overlay ───────────────────────── */
 #loading {
     position: fixed; inset: 0;
     background: rgba(5,5,15,0.92);
@@ -481,12 +481,12 @@ button:disabled { opacity: 0.35; cursor: not-allowed; transform: none !important
     font-size: 12.5px; color: var(--text2); font-weight: 500;
 }
 
-/* â”€â”€ Hidden â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── Hidden ────────────────────────────────── */
 .hidden { display: none !important; }
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/* ═══════════════════════════════════════════
    MAP PICKER MODAL
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+═══════════════════════════════════════════ */
 #map-modal {
     position: fixed; inset: 0;
     background: rgba(0,0,0,0.85);
@@ -534,7 +534,7 @@ button:disabled { opacity: 0.35; cursor: not-allowed; transform: none !important
 
 #leaflet-map { height: 420px; width: 100%; background: #0a0a1a; }
 
-/* Invert OSM tiles to dark theme â€” no API key needed */
+/* Invert OSM tiles to dark theme — no API key needed */
 #leaflet-map .leaflet-tile-pane {
     filter: invert(1) hue-rotate(180deg) brightness(0.85) saturate(0.7);
 }
@@ -601,7 +601,7 @@ button:disabled { opacity: 0.35; cursor: not-allowed; transform: none !important
     cursor: not-allowed; box-shadow: none;
 }
 
-/* â”€â”€ Premium Select Dropdown â”€â”€ */
+/* ── Premium Select Dropdown ── */
 .premium-select {
     width: 100%;
     padding: 10px 12px;

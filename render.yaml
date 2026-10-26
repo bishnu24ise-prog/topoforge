@@ -7,8 +7,6 @@ services:
     envVars:
       - key: GEMINI_API_KEY
         sync: false
-      - key: WISPR_FLOW_API_KEY
-        sync: false
       - key: SUPABASE_URL
         sync: false
       - key: SUPABASE_ANON_KEY

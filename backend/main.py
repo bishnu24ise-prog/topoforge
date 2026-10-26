@@ -1,5 +1,5 @@
 """
-TopoForge â€” FastAPI Backend
+TopoForge — FastAPI Backend
 """
 
 import os

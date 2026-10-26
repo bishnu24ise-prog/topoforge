@@ -1,5 +1,5 @@
 /**
- * Voice Chat Module â€” AI Tour Guide
+ * Voice Chat Module — AI Tour Guide
  * Handles bidirectional audio streaming with Gemini as a tour guide
  */
 
@@ -39,15 +39,15 @@ const VoiceChat = (function() {
         let prompt = `You are a friendly and knowledgeable tour guide flying over ${mapName || 'terrain'}.
 
 Geographic bounds of this map:
-- North: ${bounds?.north?.toFixed(4) || 'unknown'}Â°
-- South: ${bounds?.south?.toFixed(4) || 'unknown'}Â°
-- East: ${bounds?.east?.toFixed(4) || 'unknown'}Â°
-- West: ${bounds?.west?.toFixed(4) || 'unknown'}Â°`;
+- North: ${bounds?.north?.toFixed(4) || 'unknown'}°
+- South: ${bounds?.south?.toFixed(4) || 'unknown'}°
+- East: ${bounds?.east?.toFixed(4) || 'unknown'}°
+- West: ${bounds?.west?.toFixed(4) || 'unknown'}°`;
 
         if (pos) {
             prompt += `
 
-Current flight position: ${pos.lat.toFixed(4)}Â° latitude, ${pos.lon.toFixed(4)}Â° longitude, at approximately ${Math.round(pos.altitude)} meters altitude.`;
+Current flight position: ${pos.lat.toFixed(4)}° latitude, ${pos.lon.toFixed(4)}° longitude, at approximately ${Math.round(pos.altitude)} meters altitude.`;
         }
 
         prompt += `
@@ -340,7 +340,7 @@ Your role:
                 turns: [{
                     role: "user",
                     parts: [{
-                        text: `[Position update: ${pos.lat.toFixed(4)}Â°, ${pos.lon.toFixed(4)}Â°, ${Math.round(pos.altitude)}m altitude]`
+                        text: `[Position update: ${pos.lat.toFixed(4)}°, ${pos.lon.toFixed(4)}°, ${Math.round(pos.altitude)}m altitude]`
                     }]
                 }],
                 turnComplete: true
@@ -548,4 +548,3 @@ Your role:
         }
     };
 })();
-

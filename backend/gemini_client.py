@@ -53,7 +53,7 @@ def _compress_image(image_path: str, max_size: int = 512) -> tuple[bytes, str]:
         return data, mime
 
     img = PILImage.open(image_path).convert("RGB")
-    # Resize so longest side â‰¤ max_size
+    # Resize so longest side ≤ max_size
     ratio = max_size / max(img.width, img.height)
     if ratio < 1.0:
         new_w = int(img.width * ratio)
@@ -93,12 +93,12 @@ async def _call_with_retry(coro_fn, max_retries: int = 3, base_delay: float = 1.
                 if attempt < max_retries:
                     delay = base_delay * (2 ** attempt)
                     logger.warning(
-                        "Gemini transient error (attempt %d/%d): %s â€” retrying in %.1fs",
+                        "Gemini transient error (attempt %d/%d): %s — retrying in %.1fs",
                         attempt + 1, max_retries, err_str[:120], delay
                     )
                     await asyncio.sleep(delay)
                     continue
-            # Non-retryable error â€” raise immediately
+            # Non-retryable error — raise immediately
             raise
     raise last_exc
 
@@ -112,10 +112,10 @@ async def extract_bounds_from_image(image_path: str) -> dict:
     """
     client = get_client()
 
-    # Compress image to â‰¤512px JPEG before sending â€” 3-5x smaller payload
+    # Compress image to ≤512px JPEG before sending — 3-5x smaller payload
     image_data, mime_type = _compress_image(image_path, max_size=512)
 
-    # Ultra-short, precise prompt â€” fewer tokens = faster response
+    # Ultra-short, precise prompt — fewer tokens = faster response
     prompt = (
         "Look at this map image. Extract the geographic bounding box. "
         "Reply with ONLY valid JSON, no markdown, no explanation:\n"
@@ -132,21 +132,21 @@ async def extract_bounds_from_image(image_path: str) -> dict:
             ],
             config=types.GenerateContentConfig(
                 temperature=0,                   # Deterministic output
-                max_output_tokens=256,           # Safe headroom â€” JSON is ~50 tokens but thinking eats some
+                max_output_tokens=256,           # Safe headroom — JSON is ~50 tokens but thinking eats some
                 thinking_config=types.ThinkingConfig(
-                    thinking_budget=0            # Disable internal reasoning â€” not needed for JSON extraction
+                    thinking_budget=0            # Disable internal reasoning — not needed for JSON extraction
                 ),
             )
         )
 
-    # Timeout: 15s â€” enough for flash without thinking, even under moderate load
+    # Timeout: 15s — enough for flash without thinking, even under moderate load
     try:
         response = await asyncio.wait_for(
             _call_with_retry(_call),
             timeout=15.0
         )
     except asyncio.TimeoutError:
-        raise RuntimeError("Gemini timed out after 15s â€” please try again")
+        raise RuntimeError("Gemini timed out after 15s — please try again")
 
     return _parse_bounds_json(response.text)
 
@@ -156,9 +156,9 @@ def _parse_bounds_json(raw: str) -> dict:
     Robustly extract a bounds dict from Gemini's raw text response.
 
     Tries three strategies in order:
-      1. Regex â€” grab the first {...} block and parse it.
-      2. Markdown strip â€” remove ```json fences then parse.
-      3. Float scan â€” find exactly 4 numbers in north/south/east/west order.
+      1. Regex — grab the first {...} block and parse it.
+      2. Markdown strip — remove ```json fences then parse.
+      3. Float scan — find exactly 4 numbers in north/south/east/west order.
 
     Raises ValueError with the raw text on total failure.
     """
@@ -166,7 +166,7 @@ def _parse_bounds_json(raw: str) -> dict:
 
     text = raw.strip()
 
-    # â”€â”€ Strategy 1: extract first JSON object with regex â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    # ── Strategy 1: extract first JSON object with regex ──────────────────
     m = re.search(r'\{[^{}]*\}', text, re.DOTALL)
     if m:
         try:
@@ -175,7 +175,7 @@ def _parse_bounds_json(raw: str) -> dict:
         except Exception:
             pass
 
-    # â”€â”€ Strategy 2: strip markdown fences â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    # ── Strategy 2: strip markdown fences ────────────────────────────────
     clean = re.sub(r'```(?:json)?', '', text).replace('```', '').strip()
     try:
         data = json.loads(clean)
@@ -183,7 +183,7 @@ def _parse_bounds_json(raw: str) -> dict:
     except Exception:
         pass
 
-    # â”€â”€ Strategy 3: scan for 4 floats labelled north/south/east/west â”€â”€â”€â”€â”€
+    # ── Strategy 3: scan for 4 floats labelled north/south/east/west ─────
     keys   = ["north", "south", "east", "west"]
     values = {}
     for key in keys:
@@ -194,7 +194,7 @@ def _parse_bounds_json(raw: str) -> dict:
     if len(values) == 4:
         return _validate_bounds(values)
 
-    # All strategies failed â€” log and raise
+    # All strategies failed — log and raise
     logger.error("Gemini bounds parse failed. Raw response:\n%s", text)
     raise ValueError(
         f"Could not parse bounds from Gemini response. "
@@ -226,7 +226,7 @@ async def generate_narration(location_info: dict, visible_features: list[str]) -
 
     prompt = f"""You are a knowledgeable tour guide narrating a scenic flyover.
 
-Current position: {location_info.get('lat', 'unknown')}Â°N, {location_info.get('lon', 'unknown')}Â°W
+Current position: {location_info.get('lat', 'unknown')}°N, {location_info.get('lon', 'unknown')}°W
 Elevation: {location_info.get('elevation', 'unknown')}m
 Visible features: {', '.join(visible_features) if visible_features else 'general terrain'}
 
@@ -242,4 +242,3 @@ Be conversational and enthusiastic but not over the top."""
     )
 
     return response.text.strip()
-
