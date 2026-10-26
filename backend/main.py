@@ -1,4 +1,4 @@
-﻿"""
+"""
 TopoForge â€” FastAPI Backend
 """
 

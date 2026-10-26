@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Wispr Flow Voice Command Controller for TopoForge
  * Captures microphone input, transcribes voice via Wispr Flow API,
  * and executes dynamic flight navigation and terrain styling actions.

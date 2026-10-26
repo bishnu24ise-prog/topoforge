@@ -1,4 +1,4 @@
-﻿/**
+/**
  * AudioWorklet processor for capturing microphone audio
  * Runs on dedicated audio thread for low-latency, glitch-free capture
  */

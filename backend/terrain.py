@@ -1,4 +1,4 @@
-﻿"""
+"""
 Terrain processing - GeoTIFF extraction and heightmap generation
 """
 

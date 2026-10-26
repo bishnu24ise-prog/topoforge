@@ -1,14 +1,18 @@
-﻿{
+{
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "https://topoforge-backend.onrender.com/api/$1" }
+    {
+      "source": "/api/(.*)",
+      "destination": "https://topoforge-backend.onrender.com/api/"
+    }
   ],
   "headers": [
     {
       "source": "/(.*)",
       "headers": [
-        { "key": "Cross-Origin-Opener-Policy", "value": "same-origin" },
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "X-Frame-Options", "value": "DENY" }
+        {
+          "key": "Cross-Origin-Opener-Policy",
+          "value": "same-origin"
+        }
       ]
     }
   ]

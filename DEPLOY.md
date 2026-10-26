@@ -1,4 +1,4 @@
-﻿# Deploying TopoForge â€” Vercel (frontend) + Render (backend)
+# Deploying TopoForge â€” Vercel (frontend) + Render (backend)
 
 ## Overview
 

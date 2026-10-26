@@ -1,4 +1,4 @@
-﻿"""
+"""
 TopoForge â€” Database layer using Supabase (free tier PostgreSQL).
 Stores: upload sessions, map metadata, view counts.
 Uses supabase-py which talks to Supabase REST API â€” no raw SQL needed.

@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 """
 TopoForge — AI 3D Terrain Explorer
 Full-stack development runner

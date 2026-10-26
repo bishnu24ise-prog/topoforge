@@ -1,4 +1,4 @@
-﻿"""
+"""
 Free-tier texture stylization using canvas-based hypsometric tinting.
 Uses local PIL-based hypsometric tinting. No external API needed.
 No API key or cost required.

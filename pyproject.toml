@@ -1,4 +1,4 @@
-﻿[project]
+[project]
 name = "topoforge"
 version = "2.1.0"
 description = "Explore any place on Earth as real 3D terrain with AI Voice Guide and Wispr Flow voice controls."

@@ -1,4 +1,4 @@
-﻿# TopoForge ðŸŒ â€” AI 3D Terrain Explorer
+# TopoForge ðŸŒ â€” AI 3D Terrain Explorer
 
 > **Turn any 2D map or satellite tile into a highly detailed, interactive 3D terrain with real-time AI Voice narration and premium visual styles.**
 

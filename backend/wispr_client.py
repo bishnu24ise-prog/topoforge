@@ -1,4 +1,4 @@
-﻿"""
+"""
 Wispr Flow API Client & Voice Command Intent Parser for TopoForge
 Integrates Wispr Flow speech-to-text API for high-speed voice command detection.
 """

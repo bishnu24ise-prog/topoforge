@@ -1,4 +1,4 @@
-﻿"""
+"""
 Gemini API client for heightmap generation and narration
 """
 

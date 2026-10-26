@@ -1,4 +1,4 @@
-﻿"""
+"""
 TopoForge Backend Package — 3D Terrain Analysis & AI Services
 High-density mesh elevation, satellite stylization, Gemini narration, and Wispr Flow voice detection.
 """

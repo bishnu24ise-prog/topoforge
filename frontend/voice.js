@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Voice Chat Module â€” AI Tour Guide
  * Handles bidirectional audio streaming with Gemini as a tour guide
  */

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * TopoForge - 3D Terrain Viewer
  * Main application logic
  */
