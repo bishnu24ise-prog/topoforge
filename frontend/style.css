@@ -1,6 +1,6 @@
-/* ═══════════════════════════════════════════
-   TOPOFORGE — PREMIUM HACKATHON UI
-═══════════════════════════════════════════ */
+﻿/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   TOPOFORGE â€” PREMIUM HACKATHON UI
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 /* Tokens */
 :root {
@@ -34,7 +34,7 @@ body {
     height: 100vh;
 }
 
-/* ── 3D Canvas ─────────────────────────────── */
+/* â”€â”€ 3D Canvas â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 #container {
     position: fixed;
     inset: 0;
@@ -67,7 +67,7 @@ body {
     to   { transform: translate(30px, 20px); }
 }
 
-/* ── Sidebar ───────────────────────────────── */
+/* â”€â”€ Sidebar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 #controls {
     position: fixed;
     top: 0; left: 0;
@@ -94,7 +94,7 @@ body {
 #sidebar-body::-webkit-scrollbar { width: 4px; }
 #sidebar-body::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 2px; }
 
-/* ── Logo Header ───────────────────────────── */
+/* â”€â”€ Logo Header â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 #sidebar-header {
     padding: 20px 16px 0;
     flex-shrink: 0;
@@ -159,7 +159,7 @@ body {
     margin: 0 -16px 16px;
 }
 
-/* ── Sections ──────────────────────────────── */
+/* â”€â”€ Sections â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 #controls section {
     margin-bottom: 4px;
     padding: 14px 0;
@@ -187,7 +187,7 @@ body {
     flex-shrink: 0;
 }
 
-/* ── Drop Zone ─────────────────────────────── */
+/* â”€â”€ Drop Zone â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 #drop-zone {
     border: 1.5px dashed rgba(255,255,255,0.1);
     border-radius: var(--radius);
@@ -222,7 +222,7 @@ body {
 }
 #drop-zone input { display: none; }
 
-/* ── Divider ───────────────────────────────── */
+/* â”€â”€ Divider â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .upload-divider {
     display: flex; align-items: center; gap: 10px;
     color: var(--text3); font-size: 10px;
@@ -232,7 +232,7 @@ body {
     content: ''; flex: 1; height: 1px; background: var(--border);
 }
 
-/* ── Map Pick Button ───────────────────────── */
+/* â”€â”€ Map Pick Button â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .map-pick-btn {
     width: 100%; padding: 11px 14px;
     display: flex; align-items: center; justify-content: center; gap: 8px;
@@ -253,7 +253,7 @@ body {
     transform: translateY(-1px);
 }
 
-/* ── File Info ─────────────────────────────── */
+/* â”€â”€ File Info â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 #file-info {
     margin-top: 10px;
     padding: 8px 12px;
@@ -265,7 +265,7 @@ body {
 }
 #file-name { color: var(--text2); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-/* ── Badge ─────────────────────────────────── */
+/* â”€â”€ Badge â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .badge {
     display: inline-block;
     background: rgba(129,140,248,0.15);
@@ -279,7 +279,7 @@ body {
     white-space: nowrap;
 }
 
-/* ── Inputs ────────────────────────────────── */
+/* â”€â”€ Inputs â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .input-group { margin-bottom: 8px; }
 .input-group label {
     display: block; font-size: 10px; font-weight: 500;
@@ -302,7 +302,7 @@ body {
 }
 .bounds-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
 
-/* ── Sliders ───────────────────────────────── */
+/* â”€â”€ Sliders â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .slider-group { margin-bottom: 14px; }
 .slider-header {
     display: flex; justify-content: space-between; align-items: center;
@@ -326,7 +326,7 @@ body {
 }
 .slider-group input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
 
-/* ── Buttons ───────────────────────────────── */
+/* â”€â”€ Buttons â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 button { cursor: pointer; font-family: inherit; border: none; transition: all var(--transition); margin-bottom: 8px; }
 
 .btn-primary {
@@ -372,7 +372,7 @@ button { cursor: pointer; font-family: inherit; border: none; transition: all va
 
 button:disabled { opacity: 0.35; cursor: not-allowed; transform: none !important; }
 
-/* ── Status Bar ────────────────────────────── */
+/* â”€â”€ Status Bar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 #status-bar {
     flex-shrink: 0;
     padding: 10px 16px 14px;
@@ -394,7 +394,7 @@ button:disabled { opacity: 0.35; cursor: not-allowed; transform: none !important
 #status.success { color: var(--accent); }
 #status.loading { color: #fbbf24; }
 
-/* ── Controls Info ─────────────────────────── */
+/* â”€â”€ Controls Info â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 #info {
     position: fixed;
     bottom: 20px;
@@ -420,7 +420,7 @@ button:disabled { opacity: 0.35; cursor: not-allowed; transform: none !important
     color: var(--text2);
 }
 
-/* ── Voice ─────────────────────────────────── */
+/* â”€â”€ Voice â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 #voice-status {
     display: flex; align-items: center; gap: 8px;
     padding: 8px 12px;
@@ -447,7 +447,7 @@ button:disabled { opacity: 0.35; cursor: not-allowed; transform: none !important
     color: #fca5a5;
 }
 
-/* ── Loading Overlay ───────────────────────── */
+/* â”€â”€ Loading Overlay â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 #loading {
     position: fixed; inset: 0;
     background: rgba(5,5,15,0.92);
@@ -481,12 +481,12 @@ button:disabled { opacity: 0.35; cursor: not-allowed; transform: none !important
     font-size: 12.5px; color: var(--text2); font-weight: 500;
 }
 
-/* ── Hidden ────────────────────────────────── */
+/* â”€â”€ Hidden â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .hidden { display: none !important; }
 
-/* ═══════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    MAP PICKER MODAL
-═══════════════════════════════════════════ */
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 #map-modal {
     position: fixed; inset: 0;
     background: rgba(0,0,0,0.85);
@@ -534,7 +534,7 @@ button:disabled { opacity: 0.35; cursor: not-allowed; transform: none !important
 
 #leaflet-map { height: 420px; width: 100%; background: #0a0a1a; }
 
-/* Invert OSM tiles to dark theme — no API key needed */
+/* Invert OSM tiles to dark theme â€” no API key needed */
 #leaflet-map .leaflet-tile-pane {
     filter: invert(1) hue-rotate(180deg) brightness(0.85) saturate(0.7);
 }
@@ -601,7 +601,7 @@ button:disabled { opacity: 0.35; cursor: not-allowed; transform: none !important
     cursor: not-allowed; box-shadow: none;
 }
 
-/* ── Premium Select Dropdown ── */
+/* â”€â”€ Premium Select Dropdown â”€â”€ */
 .premium-select {
     width: 100%;
     padding: 10px 12px;
@@ -625,4 +625,120 @@ button:disabled { opacity: 0.35; cursor: not-allowed; transform: none !important
 .premium-select option {
     background: #0f172a;
     color: var(--text);
+}
+
+
+/* ═══════════════════════════════════════════
+   WISPR FLOW VOICE COMMAND HUD & WIDGET
+═══════════════════════════════════════════ */
+#wispr-hud {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+    pointer-events: auto;
+}
+
+.wispr-mic-btn {
+    background: rgba(13, 19, 39, 0.88);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(34, 211, 238, 0.35);
+    border-radius: 24px;
+    padding: 8px 14px;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 12.5px;
+    font-weight: 600;
+    font-family: inherit;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45), 0 0 10px rgba(34, 211, 238, 0.1);
+}
+
+.wispr-mic-btn:hover {
+    border-color: rgba(34, 211, 238, 0.8);
+    box-shadow: 0 6px 24px rgba(34, 211, 238, 0.25);
+    transform: translateY(-2px);
+}
+
+.wispr-mic-btn.listening {
+    background: rgba(239, 68, 68, 0.2);
+    border-color: #ef4444;
+    color: #fca5a5;
+    box-shadow: 0 0 25px rgba(239, 68, 68, 0.5);
+    animation: wispr-pulse 1.5s infinite;
+}
+
+.wispr-mic-icon {
+    font-size: 14px;
+    line-height: 1;
+}
+
+.wispr-kbd {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 4px;
+    padding: 1px 5px;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--accent);
+}
+
+.wispr-feedback-pill {
+    background: rgba(10, 15, 30, 0.94);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(99, 102, 241, 0.45);
+    border-radius: 12px;
+    padding: 9px 14px;
+    font-size: 12px;
+    color: #e2e8f0;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    max-width: 360px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+    animation: wispr-fade-in 0.2s ease-out;
+}
+
+.wispr-feedback-pill.success {
+    border-color: rgba(34, 197, 94, 0.5);
+}
+
+.wispr-feedback-pill.error {
+    border-color: rgba(239, 68, 68, 0.5);
+    color: #fca5a5;
+}
+
+.wispr-pulse-ring {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+    animation: wispr-ring-pulse 0.9s infinite alternate;
+    flex-shrink: 0;
+}
+
+@keyframes wispr-pulse {
+    0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.6); }
+    70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+}
+
+@keyframes wispr-ring-pulse {
+    from { transform: scale(0.85); opacity: 0.6; }
+    to { transform: scale(1.2); opacity: 1; }
+}
+
+@keyframes wispr-fade-in {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
 }

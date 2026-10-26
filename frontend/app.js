@@ -1,4 +1,4 @@
-/**
+﻿/**
  * TopoForge - 3D Terrain Viewer
  * Main application logic
  */
@@ -196,7 +196,7 @@ function setupUI() {
     // View controls
     const exagSlider = document.getElementById('exag');
     exagSlider.addEventListener('input', () => {
-        document.getElementById('exag-val').textContent = exagSlider.value + '×';
+        document.getElementById('exag-val').textContent = exagSlider.value + 'Ã—';
         if (state.terrain && state.heightmapTexture) {
             createTerrain(); // Rebuild terrain with new exaggeration
         }
@@ -224,8 +224,8 @@ function setupUI() {
         const elevationDeg = parseFloat(elevationSlider.value);
 
         // Update value displays
-        document.getElementById('sun-azimuth-val').textContent = azimuthDeg + '°';
-        document.getElementById('sun-elevation-val').textContent = elevationDeg + '°';
+        document.getElementById('sun-azimuth-val').textContent = azimuthDeg + 'Â°';
+        document.getElementById('sun-elevation-val').textContent = elevationDeg + 'Â°';
 
         // Convert to radians
         const azimuthRad = azimuthDeg * Math.PI / 180;
@@ -293,14 +293,39 @@ function setupUI() {
         }
     });
 
-    // Map size slider — redraw rectangle live
+    // Map size slider â€” redraw rectangle live
     document.getElementById('map-size-slider').addEventListener('input', onMapSizeChange);
 
     // Mouse controls
     setupMouseControls();
 
     // Keyboard controls
-    document.addEventListener('keydown', (e) => state.keys[e.code] = true);
+        // Keyboard controls + Wispr Flow Voice shortcut 'V'
+    document.addEventListener('keydown', (e) => {
+        if ((e.key === 'v' || e.key === 'V') && !['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName)) {
+            if (typeof WisprCommands !== 'undefined') {
+                e.preventDefault();
+                WisprCommands.toggle();
+                return;
+            }
+        }
+        state.keys[e.code] = true;
+    });
+
+    // Initialize Wispr Flow voice command controller
+    if (typeof WisprCommands !== 'undefined') {
+        WisprCommands.init(handleVoiceCommandExecution, updateWisprHUDState);
+
+        const micBtn = document.getElementById('wispr-mic-btn');
+        if (micBtn) {
+            micBtn.addEventListener('click', () => WisprCommands.toggle());
+        }
+
+        const sidebarWisprBtn = document.getElementById('sidebar-wispr-btn');
+        if (sidebarWisprBtn) {
+            sidebarWisprBtn.addEventListener('click', () => WisprCommands.toggle());
+        }
+    }
     document.addEventListener('keyup', (e) => state.keys[e.code] = false);
 
     // Resize
@@ -419,7 +444,7 @@ async function uploadFile(file) {
         updateStepNumbers();
 
         hideLoading();
-        setStatus(`Loaded: ${data.width}×${data.height}px`, 'success');
+        setStatus(`Loaded: ${data.width}Ã—${data.height}px`, 'success');
 
     } catch (err) {
         hideLoading();
@@ -733,7 +758,7 @@ async function stylizeTexture() {
     const btn = document.getElementById('stylize-btn');
     const originalText = btn.textContent;
     btn.disabled = true;
-    btn.textContent = '🎨 Stylizing...';
+    btn.textContent = 'ðŸŽ¨ Stylizing...';
 
     const style = document.getElementById('texture-style-select').value;
 
@@ -768,7 +793,7 @@ async function stylizeTexture() {
 
         const data = await response.json();
 
-        // Load stylized texture — works with both data URIs and CDN URLs
+        // Load stylized texture â€” works with both data URIs and CDN URLs
         const loader = new THREE.TextureLoader();
         loader.setCrossOrigin('anonymous');
 
@@ -856,18 +881,18 @@ function openMapPicker() {
 
     // Init Leaflet only once
     if (!mapState.leaflet) {
-        // OpenStreetMap tiles — 100% free, zero API key required
+        // OpenStreetMap tiles â€” 100% free, zero API key required
         mapState.leaflet = L.map('leaflet-map', {
             center: [20.5937, 78.9629],
             zoom: 4,
             zoomControl: true
         });
 
-        // OpenStreetMap standard tiles — always free, no key needed
+        // OpenStreetMap standard tiles â€” always free, no key needed
         L.tileLayer(
             'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
             {
-                attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                attribution: 'Â© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
                 subdomains: 'abc',
                 maxZoom: 19,
                 crossOrigin: true
@@ -886,7 +911,7 @@ function closeMapPicker() {
 }
 
 function getMapHalfDeg() {
-    // Slider value 1-20 → 0.1° to 2.0° half-size
+    // Slider value 1-20 â†’ 0.1Â° to 2.0Â° half-size
     const val = parseInt(document.getElementById('map-size-slider').value);
     return val * 0.1;
 }
@@ -894,7 +919,7 @@ function getMapHalfDeg() {
 function onMapSizeChange() {
     const half = getMapHalfDeg();
     const full = (half * 2).toFixed(1);
-    document.getElementById('map-size-display').textContent = `~${full}° × ${full}°`;
+    document.getElementById('map-size-display').textContent = `~${full}Â° Ã— ${full}Â°`;
 
     // Update slider gradient
     const slider = document.getElementById('map-size-slider');
@@ -937,16 +962,16 @@ function drawBoundingBox(latlng) {
     // Update info panel
     const latDir = latlng.lat >= 0 ? 'N' : 'S';
     const lonDir = latlng.lng >= 0 ? 'E' : 'W';
-    const latStr = Math.abs(latlng.lat).toFixed(4) + '°' + latDir;
-    const lonStr = Math.abs(latlng.lng).toFixed(4) + '°' + lonDir;
+    const latStr = Math.abs(latlng.lat).toFixed(4) + 'Â°' + latDir;
+    const lonStr = Math.abs(latlng.lng).toFixed(4) + 'Â°' + lonDir;
 
-    // Rough area estimate in km²
+    // Rough area estimate in kmÂ²
     const latKm = (north - south) * 111;
     const lonKm = (east - west) * 111 * Math.cos(latlng.lat * Math.PI / 180);
     const areaKm = Math.round(latKm * lonKm);
 
-    document.getElementById('map-coords-display').textContent = `📍 ${latStr}, ${lonStr}`;
-    document.getElementById('map-area-display').textContent = `~${areaKm.toLocaleString()} km²`;
+    document.getElementById('map-coords-display').textContent = `ðŸ“ ${latStr}, ${lonStr}`;
+    document.getElementById('map-area-display').textContent = `~${areaKm.toLocaleString()} kmÂ²`;
     document.getElementById('map-location-info').classList.remove('hidden');
     document.getElementById('confirm-map-btn').disabled = false;
 }
@@ -992,7 +1017,7 @@ async function confirmMapPick() {
     // Show file-info row with location label
     document.getElementById('file-info').classList.remove('hidden');
     document.getElementById('file-name').textContent =
-        `📍 ${latlng.lat.toFixed(3)}°, ${latlng.lng.toFixed(3)}°`;
+        `ðŸ“ ${latlng.lat.toFixed(3)}Â°, ${latlng.lng.toFixed(3)}Â°`;
     document.getElementById('file-bounds').textContent = 'Map Pick';
 
     // Fetch satellite texture + DEM in parallel
@@ -1029,7 +1054,7 @@ async function confirmMapPick() {
         setStatus('Fetching DEM...', 'loading');
         await fetchDEM();
 
-        setStatus(`📍 ${latlng.lat.toFixed(3)}°, ${latlng.lng.toFixed(3)}° — terrain ready!`, 'success');
+        setStatus(`ðŸ“ ${latlng.lat.toFixed(3)}Â°, ${latlng.lng.toFixed(3)}Â° â€” terrain ready!`, 'success');
 
     } catch (err) {
         hideLoading();
@@ -1064,7 +1089,7 @@ async function fetchSatelliteTiles(bounds) {
     const yMin = Math.min(minTile.y, maxTile.y);
     const yMax = Math.max(minTile.y, maxTile.y);
 
-    // Clamp to a reasonable number of tiles (max 6×6)
+    // Clamp to a reasonable number of tiles (max 6Ã—6)
     const clampedXMax = Math.min(xMax, xMin + 5);
     const clampedYMax = Math.min(yMax, yMin + 5);
 
@@ -1181,7 +1206,7 @@ function toggleFlyMode() {
         if (state.planeAudio) {
             state.planeAudio.pause();
         }
-        document.getElementById('fly-btn').textContent = '✈️ Fly Plane';
+        document.getElementById('fly-btn').textContent = 'âœˆï¸ Fly Plane';
         updateOrbitCamera();
     }
 }
@@ -1192,7 +1217,7 @@ async function toggleVoiceChat() {
 
     if (VoiceChat.isActive()) {
         VoiceChat.stop();
-        btn.textContent = '🎤 Start Voice Chat';
+        btn.textContent = 'ðŸŽ¤ Start Voice Chat';
         btn.classList.remove('active');
         status.classList.add('hidden');
         if (state.planeAudio) {
@@ -1215,7 +1240,7 @@ async function toggleVoiceChat() {
             VoiceChat.init(key, mapName, state.bounds, getGeoPosition);
             await VoiceChat.start();
 
-            btn.textContent = '🔴 Stop Voice Chat';
+            btn.textContent = 'ðŸ”´ Stop Voice Chat';
             btn.classList.add('active');
             btn.disabled = false;
             status.classList.remove('hidden');
@@ -1225,7 +1250,7 @@ async function toggleVoiceChat() {
         } catch (err) {
             console.error('Voice chat error:', err);
             setStatus('Voice chat failed: ' + err.message, 'error');
-            btn.textContent = '🎤 Start Voice Chat';
+            btn.textContent = 'ðŸŽ¤ Start Voice Chat';
             btn.disabled = false;
         }
     }
@@ -1254,7 +1279,7 @@ function animate() {
     if (state.cameraMode === 'fly' && state.planeMode && state.plane) {
         const turnSpeed = 1.2;
         const pitchSpeed = 0.8;
-        const forwardSpeed = 3;
+        const forwardSpeed = 3 * (state.flightSpeedMultiplier || 1.0);
         const bankAngle = 0.5;
 
         // Yaw (turn left/right)
@@ -1334,3 +1359,67 @@ function hideLoading() {
 // START
 // ===========================================
 init();
+
+
+// ===========================================
+// WISPR FLOW VOICE COMMAND INTEGRATION
+// ===========================================
+function updateWisprHUDState(status) {
+    const micBtn = document.getElementById('wispr-mic-btn');
+    const pill = document.getElementById('wispr-feedback-pill');
+    const textEl = document.getElementById('wispr-feedback-text');
+
+    if (!micBtn || !pill || !textEl) return;
+
+    if (status.state === 'listening') {
+        micBtn.classList.add('listening');
+        pill.classList.remove('hidden', 'success', 'error');
+        textEl.textContent = '🎙️ Listening for command...';
+    } else if (status.state === 'processing') {
+        micBtn.classList.remove('listening');
+        pill.classList.remove('hidden', 'success', 'error');
+        textEl.textContent = `⚡ Processing: ${status.message}`;
+    } else if (status.state === 'success') {
+        micBtn.classList.remove('listening');
+        pill.classList.remove('hidden', 'error');
+        pill.classList.add('success');
+        textEl.textContent = `✨ ${status.message}`;
+        setStatus(status.message, 'success');
+        setTimeout(() => {
+            if (!WisprCommands.isActive()) {
+                pill.classList.add('hidden');
+            }
+        }, 4000);
+    } else if (status.state === 'error') {
+        micBtn.classList.remove('listening');
+        pill.classList.remove('hidden', 'success');
+        pill.classList.add('error');
+        textEl.textContent = `⚠️ ${status.message}`;
+        setTimeout(() => {
+            if (!WisprCommands.isActive()) {
+                pill.classList.add('hidden');
+            }
+        }, 3500);
+    } else {
+        micBtn.classList.remove('listening');
+        pill.classList.add('hidden');
+    }
+}
+
+function handleVoiceCommandExecution(cmd) {
+    console.log('[Voice Command Action Handled]:', cmd);
+    if (!cmd) return;
+
+    // Flight mode dynamic speed and altitude handling
+    if (state.cameraMode === 'fly' && state.planeMode && state.plane) {
+        if (cmd.action === 'speed_up') {
+            state.flightSpeedMultiplier = Math.min(3.5, (state.flightSpeedMultiplier || 1.0) * 1.4);
+        } else if (cmd.action === 'slow_down') {
+            state.flightSpeedMultiplier = Math.max(0.4, (state.flightSpeedMultiplier || 1.0) * 0.7);
+        } else if (cmd.action === 'ascend') {
+            state.plane.position.y += 18;
+        } else if (cmd.action === 'descend') {
+            state.plane.position.y = Math.max(10, state.plane.position.y - 18);
+        }
+    }
+}

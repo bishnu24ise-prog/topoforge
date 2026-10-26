@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="TopoForge — Explore any place on Earth as real 3D terrain. Powered by AI and satellite data.">
-    <title>TopoForge — AI 3D Terrain Explorer</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌍</text></svg>">
+    <meta name="description" content="TopoForge â€” Explore any place on Earth as real 3D terrain. Powered by AI and satellite data.">
+    <title>TopoForge â€” AI 3D Terrain Explorer</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>ðŸŒ</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
@@ -39,7 +39,7 @@
                 </div>
                 <div>
                     <h1>TopoForge</h1>
-                    <span class="version-badge">AI Terrain · v2.0</span>
+                    <span class="version-badge">AI Terrain Â· v2.0</span>
                 </div>
             </div>
             <p class="tagline">Explore any place on Earth in stunning 3D</p>
@@ -57,7 +57,7 @@
                         <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 16V4m0 0L8 8m4-4l4 4"/><rect x="2" y="16" width="20" height="6" rx="2" opacity="0.4"/></svg>
                     </div>
                     <p>Drop GeoTIFF or image</p>
-                    <small>Click to browse · .tif .jpg .png</small>
+                    <small>Click to browse Â· .tif .jpg .png</small>
                     <input type="file" id="file-input" accept=".tif,.tiff,.jpg,.jpeg,.png,.webp">
                 </div>
                 <div class="upload-divider"><span>or</span></div>
@@ -92,7 +92,7 @@
                         <input type="number" id="east" step="0.0001" placeholder="e.g. 89.0">
                     </div>
                 </div>
-                <button class="btn-secondary" id="extract-bounds-btn">🤖 Extract with Gemini AI</button>
+                <button class="btn-secondary" id="extract-bounds-btn">ðŸ¤– Extract with Gemini AI</button>
             </section>
 
             <!-- Terrain Section -->
@@ -106,26 +106,26 @@
                 <div class="input-group" style="margin-top: 12px;">
                     <label>MAP STYLE</label>
                     <select id="map-style-select" class="premium-select" style="margin-bottom: 4px;">
-                        <option value="satellite">🏔️ Pure Satellite (Natural)</option>
-                        <option value="hybrid" selected>🛣️ Hybrid (Satellite + Roads & Labels)</option>
+                        <option value="satellite">ðŸ”ï¸ Pure Satellite (Natural)</option>
+                        <option value="hybrid" selected>ðŸ›£ï¸ Hybrid (Satellite + Roads & Labels)</option>
                     </select>
                 </div>
 
                 <div class="input-group" style="margin-top: 12px;">
                     <label>TEXTURE STYLE</label>
                     <select id="texture-style-select" class="premium-select" style="margin-bottom: 4px;">
-                        <option value="realistic" selected>✨ Realistic Stylish</option>
-                        <option value="hypsometric">🗺️ Hypsometric (Atlas)</option>
-                        <option value="vintage">📜 Vintage Parchment</option>
-                        <option value="cyberpunk">🌌 Cyberpunk Neon</option>
-                        <option value="emerald">🌲 Emerald Forest</option>
-                        <option value="volcanic">🔥 Volcanic Wasteland</option>
+                        <option value="realistic" selected>âœ¨ Realistic Stylish</option>
+                        <option value="hypsometric">ðŸ—ºï¸ Hypsometric (Atlas)</option>
+                        <option value="vintage">ðŸ“œ Vintage Parchment</option>
+                        <option value="cyberpunk">ðŸŒŒ Cyberpunk Neon</option>
+                        <option value="emerald">ðŸŒ² Emerald Forest</option>
+                        <option value="volcanic">ðŸ”¥ Volcanic Wasteland</option>
                     </select>
                 </div>
                 
                 <div style="display: flex; gap: 8px; margin-top: 12px;">
-                    <button class="btn-secondary" id="stylize-btn" style="flex: 1; margin-bottom: 0;">🎨 Stylize</button>
-                    <button class="btn-ghost" id="reset-stylize-btn" style="padding: 0 12px; margin: 0; width: auto; border: 1px solid var(--border);" title="Reset to original map color">↺ Reset</button>
+                    <button class="btn-secondary" id="stylize-btn" style="flex: 1; margin-bottom: 0;">ðŸŽ¨ Stylize</button>
+                    <button class="btn-ghost" id="reset-stylize-btn" style="padding: 0 12px; margin: 0; width: auto; border: 1px solid var(--border);" title="Reset to original map color">â†º Reset</button>
                 </div>
             </section>
 
@@ -135,7 +135,7 @@
                 <div class="slider-group">
                     <div class="slider-header">
                         <label>Elevation Scale</label>
-                        <span class="value" id="exag-val">7×</span>
+                        <span class="value" id="exag-val">7Ã—</span>
                     </div>
                     <input type="range" id="exag" min="1" max="80" value="7">
                 </div>
@@ -153,7 +153,7 @@
                     </div>
                     <input type="range" id="plane-volume" min="0" max="100" value="50">
                 </div>
-                <button class="btn-secondary" id="fly-btn">✈️ Fly Plane Mode</button>
+                <button class="btn-secondary" id="fly-btn">âœˆï¸ Fly Plane Mode</button>
             </section>
 
             <!-- Lighting Section -->
@@ -162,24 +162,24 @@
                 <div class="slider-group">
                     <div class="slider-header">
                         <label>Sun Azimuth</label>
-                        <span class="value" id="sun-azimuth-val">135°</span>
+                        <span class="value" id="sun-azimuth-val">135Â°</span>
                     </div>
                     <input type="range" id="sun-azimuth" min="0" max="360" value="135">
                 </div>
                 <div class="slider-group">
                     <div class="slider-header">
                         <label>Sun Elevation</label>
-                        <span class="value" id="sun-elevation-val">47°</span>
+                        <span class="value" id="sun-elevation-val">47Â°</span>
                     </div>
                     <input type="range" id="sun-elevation" min="10" max="90" value="47">
                 </div>
-                <button class="btn-ghost" id="reset-sun-btn">↺ Reset Lighting</button>
+                <button class="btn-ghost" id="reset-sun-btn">â†º Reset Lighting</button>
             </section>
 
             <!-- Voice Section -->
             <section id="voice-section" class="hidden">
                 <h3 data-step-label="Tour Guide"></h3>
-                <button class="btn-secondary" id="voice-btn">🎤 Start AI Voice Chat</button>
+                <button class="btn-secondary" id="voice-btn">ðŸŽ¤ Start AI Voice Chat</button>
                 <div id="voice-status" class="hidden">
                     <span class="voice-indicator"></span>
                     <span id="voice-status-text">Listening...</span>
@@ -190,14 +190,14 @@
 
         <!-- Status bar -->
         <div id="status-bar">
-            <div id="status">Ready · Upload a map or pick a location</div>
+            <div id="status">Ready Â· Upload a map or pick a location</div>
         </div>
 
     </div><!-- end controls -->
 
     <!-- Controls Info Pill -->
     <div id="info">
-        <kbd>Drag</kbd> Rotate &nbsp;·&nbsp; <kbd>Scroll</kbd> Zoom &nbsp;·&nbsp; Fly: <kbd>WASD</kbd> <kbd>Space/C</kbd>
+        <kbd>Drag</kbd> Rotate &nbsp;Â·&nbsp; <kbd>Scroll</kbd> Zoom &nbsp;Â·&nbsp; Fly: <kbd>WASD</kbd> <kbd>Space/C</kbd>
     </div>
 
     <!-- Map Picker Modal -->
@@ -205,17 +205,17 @@
         <div id="map-picker-card">
             <div id="map-picker-header">
                 <div>
-                    <h2>🌍 Pick a Location</h2>
+                    <h2>ðŸŒ Pick a Location</h2>
                     <p>Click anywhere on the map to select an area</p>
                 </div>
-                <button id="close-map-btn" aria-label="Close">✕</button>
+                <button id="close-map-btn" aria-label="Close">âœ•</button>
             </div>
             <div id="leaflet-map"></div>
             <div id="map-picker-controls">
                 <div id="map-size-control">
                     <div class="map-size-label">
-                        <span>📐 Area Size</span>
-                        <span id="map-size-display">~0.5° × 0.5°</span>
+                        <span>ðŸ“ Area Size</span>
+                        <span id="map-size-display">~0.5Â° Ã— 0.5Â°</span>
                     </div>
                     <input type="range" id="map-size-slider" min="1" max="20" value="5" step="1">
                     <div class="map-size-hints"><span>City</span><span>Region</span><span>Country</span></div>
@@ -224,7 +224,7 @@
                     <span id="map-coords-display"></span>
                     <span id="map-area-display" class="map-area-badge"></span>
                 </div>
-                <button id="confirm-map-btn" class="map-confirm-btn" disabled>🏔️ Build This Terrain</button>
+                <button id="confirm-map-btn" class="map-confirm-btn" disabled>ðŸ”ï¸ Build This Terrain</button>
             </div>
         </div>
     </div>
@@ -242,6 +242,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
     <script src="./voice.js"></script>
+    <script src="./wispr-commands.js"></script>
     <script src="./app.js"></script>
 </body>
 </html>
