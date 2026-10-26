@@ -1,5 +1,5 @@
-"""
-TopoForge — FastAPI Backend
+﻿"""
+TopoForge â€” FastAPI Backend
 """
 
 import os
@@ -18,6 +18,7 @@ from . import terrain
 from . import gemini_client
 from . import fal_stylize
 from . import database
+from . import wispr_client
 
 load_dotenv()
 
@@ -183,3 +184,45 @@ async def get_gemini_key():
     if not key:
         raise HTTPException(500, "GEMINI_API_KEY not configured")
     return {"key": key}
+
+
+@app.get("/api/wispr-config")
+async def get_wispr_config():
+    """Check if Wispr Flow voice detection is configured."""
+    return {
+        "configured": wispr_client.is_wispr_configured(),
+        "model": "wispr-flow-v1"
+    }
+
+
+@app.post("/api/wispr/transcribe")
+async def transcribe_voice(file: UploadFile = File(...)):
+    """Transcribe speech audio using Wispr Flow API."""
+    try:
+        audio_bytes = await file.read()
+        result = wispr_client.transcribe_audio_bytes(
+            audio_bytes,
+            content_type=file.content_type or "audio/webm"
+        )
+        if not result.get("success"):
+            return JSONResponse({"success": False, "error": result.get("error", "Transcription failed"), "text": ""}, status_code=400)
+        
+        transcript = result.get("text", "")
+        command = wispr_client.parse_voice_command(transcript)
+        return JSONResponse({
+            "success": True,
+            "text": transcript,
+            "command": command
+        })
+    except Exception as e:
+        raise HTTPException(500, f"Wispr transcription error: {str(e)}")
+
+
+@app.post("/api/wispr/parse-command")
+async def parse_command_text(payload: dict):
+    """Parse voice command text into structured TopoForge action."""
+    text = payload.get("text", "")
+    if not text:
+        raise HTTPException(400, "Text is required")
+    command = wispr_client.parse_voice_command(text)
+    return JSONResponse({"success": True, "command": command})
